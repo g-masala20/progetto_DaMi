@@ -1,0 +1,88 @@
+\documentclass[12pt, a4paper, twoside]{article}
+
+% Import
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{pifont}
+\usepackage[italian]{babel}
+\usepackage{tocloft}
+\usepackage{geometry}
+\usepackage{times}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{ragged2e}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{float}
+\usepackage{fancyhdr}
+
+% Impostazioni
+\raggedbottom
+\numberwithin{table}{section}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\setstretch{1.0}
+\setlength{\parindent}{0.5cm}
+\justifying
+\setlength{\parindent}{0pt}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\renewcommand{\cftbeforesecskip}{0pt} % Imposta lo spazio a 0 punti
+
+\begin{document}
+
+    % Copertina
+    \begin{titlepage}
+        \centering
+        
+        \includegraphics[width=0.2\linewidth]{logounica.png}
+        
+        \vspace{0.8cm}
+        \textbf{UNIVERSITA' DEGLI STUDI DI CAGLIARI} \\
+        \vspace{0.8cm}
+        \large \textbf{FACOLTÀ DI SCIENZE} \\
+        \vspace{0.8cm}
+        \large Corso di Laurea Magistrale in Informatica \\
+        
+        \vspace{4.2cm}
+        \LARGE \textbf{Data Mining: Report Finale} \\
+        
+        \vspace{5.0cm}
+        
+        \begin{flushleft}
+            \large \textbf{Studenti:} \\
+            \large Aresu Matteo \hfill 60/99/00014 \\
+            \large Mantega Gabriele \hfill 60/99/00006 \\
+            \large Masala Gabriele \hfill 60/99/00004 \\
+        \end{flushleft}
+        
+        \vspace{3.0cm}
+        \large ANNO ACCADEMICO 2025-2026
+    \end{titlepage}
+
+    % Indice
+    \pagenumbering{arabic}
+    \setcounter{page}{2}
+    \renewcommand{\contentsname}{Indice}
+    \tableofcontents
+    \pagebreak
+
+    % Inizio Documento
+    \thispagestyle{plain}
+    \section{Introduzione}
+    
+    \thispagestyle{plain}
+    \section{Dataset}
+
+    \thispagestyle{plain}
+    \section{Preprocessing}
+    
+    \thispagestyle{plain}
+    \section{Applicazione Modelli}
+    
+    \thispagestyle{plain}
+    \section{Discussione}
+    
+    \thispagestyle{plain}
+    \section{Conclusioni}
+
+\end{document}
