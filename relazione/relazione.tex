@@ -15,6 +15,9 @@
 \usepackage{url}
 \usepackage{float}
 \usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{caption}
 
 % Impostazioni
 \raggedbottom
@@ -27,6 +30,26 @@
 \setlength{\parindent}{0pt}
 \renewcommand{\sectionmark}[1]{\markboth{#1}{}}
 \renewcommand{\cftbeforesecskip}{0pt} % Imposta lo spazio a 0 punti
+
+% Configurazione opzionale dello stile dei listings
+\lstset{
+    frame=tb, % Linea sopra e sotto il blocco di codice
+    language=Python, % Specifica il linguaggio di default
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{green},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=3
+}
+\captionsetup[lstlisting]{labelformat=empty}
 
 \begin{document}
 
@@ -82,6 +105,32 @@
     \pagebreak
     \thispagestyle{plain}
     \section{Dataset}
+    Il dataset preso in esame è quello di \textbf{20newsgroups}. Al suo interno riporta quasi 20.000 pubblicazioni (\textit{post}) suddivise per categorie tematiche (20 in totale, considerando tutte le \mbox{macro-categorie} e \mbox{sotto-categorie}). Il dataset è interamente testuale ed è adatto per mettere alla prova le prestazioni dei modelli di classificazione.
+
+    \begin{lstlisting}[language={},caption=Estratto di un post del topic \texttt{sci.space}]
+From: baalke@kelvin.jpl.nasa.gov (Ron Baalke)
+Subject: Galileo Update - 04/15/93
+Organization: Jet Propulsion Laboratory
+Lines: 113
+Distribution: world
+NNTP-Posting-Host: kelvin.jpl.nasa.gov
+Keywords: Galileo, JPL
+News-Software: VAX/VMS VNEWS 1.41    
+
+Forwarded from Neal Ausman, Galileo Mission Director
+
+                                GALILEO
+                     MISSION DIRECTOR STATUS REPORT
+                             POST-LAUNCH
+                         April 9 - 15, 1993
+
+SPACECRAFT
+
+1.  On April 9, real-time commands were sent, as planned, to reacquire
+celestial reference after completion of the Low Gain Antenna (LGA-2)
+swing/Dual Drive Actuator (DDA) hammer activities.
+...
+    \end{lstlisting}
 
     \thispagestyle{plain}
     \section{Preprocessing}
