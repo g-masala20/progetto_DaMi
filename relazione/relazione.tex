@@ -18,6 +18,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{caption}
+\usepackage{hyperref}
 
 % Impostazioni
 \raggedbottom
@@ -40,7 +41,7 @@
     showstringspaces=false,
     columns=flexible,
     basicstyle={\small\ttfamily},
-    numbers=left,
+    numbers=none,
     numberstyle=\tiny\color{gray},
     keywordstyle=\color{blue},
     commentstyle=\color{green},
@@ -100,14 +101,29 @@
     L'obiettivo che ci è stato posto per il progetto è quello di utilizzare diversi modelli di classificatori, sia shallow che ensemble, per
     valutarne le prestazioni su un task di classificazione dei topic, a partire da un post dato in input. La valutazione delle prestazione
     si è basata non solo su i modelli di classificazione, ma anche sui metodi di rappresentazione geometrica dei dati in input. A questo scopo
-    sono stati utilizzati due metodi di vettorizzazione: \textbf{TF-IDF} e \textbf{GloVe}.
+    sono stati utilizzati due metodi di vettorizzazione: \textbf{TF-IDF} e \textbf{GloVe}. 
+
+    Nel secondo capitolo viene affrontata un'analisi approfondita del dataset \textbf{20newsgroups}, un'insieme di documenti testuali ampiamente
+    utilizzati nel campo del Natural Language Processing, con approfondimento su alcune categorie scelte.
+    Nel terzo capitolo viene descritto il flusso di elaborazione e trasformazione dei dati, differente per i due metodi di vettorizzazione scelti,
+    con relativo approfondimento sulle scelte prese durante lo sviluppo.
+    Nel quarto capitolo vengono elencati i classificatori di machine learning utilizzati, i relativi risultati di training e testing sul dataset
+    e scelte implementative effettuate sugli iperparametri.
+    Nel quinto capitolo vengono discussi esaustivamente i risultati ottenuti, con considerazioni argomentate, e rappresentazione visiva dei dati.
 
     \pagebreak
     \thispagestyle{plain}
     \section{Dataset}
-    Il dataset preso in esame è quello di \textbf{20newsgroups}. Al suo interno riporta quasi 20.000 pubblicazioni (\textit{post}) suddivise per categorie tematiche (20 in totale, considerando tutte le \mbox{macro-categorie} e \mbox{sotto-categorie}). Il dataset è interamente testuale ed è adatto per mettere alla prova le prestazioni dei modelli di classificazione.
+    Il dataset preso in esame è \textbf{20newsgroups}. Al suo interno riporta quasi 20.000 pubblicazioni (post) suddivise per 
+    categorie tematiche, per un totale di venti topic, distribuiti in \mbox{macro-categorie} e delle \mbox{sotto-categorie}. Queste vengono
+    esplicitate tramite una gerarchia, con la seguente struttura: \texttt{macrocategoria.sottocategorie}.
+    Il dataset è un insieme di documenti puramente testuali, ed è adatto per la valutazione delle prestazioni dei modelli di classificazione.
+    La documentazione relativa è possibile consultarla al seguente link: 
+    
+    \href{https://www.kaggle.com/datasets/crawford/20-newsgroups}{https://www.kaggle.com/datasets/crawford/20-newsgroups}.
 
-    \begin{lstlisting}[language={},caption=Estratto di un post del topic \texttt{sci.space}]
+\begin{figure}[ht]
+    \begin{lstlisting}[language={}]
 From: baalke@kelvin.jpl.nasa.gov (Ron Baalke)
 Subject: Galileo Update - 04/15/93
 Organization: Jet Propulsion Laboratory
@@ -131,6 +147,20 @@ celestial reference after completion of the Low Gain Antenna (LGA-2)
 swing/Dual Drive Actuator (DDA) hammer activities.
 ...
     \end{lstlisting}
+    \caption{Estratto di un post del topic \texttt{sci.space}}
+    \label{fig:fig1}
+\end{figure}
+
+    Delle categorie presenti nel dataset sono state analizzate soltanto cinque per le elaborazioni richieste: \texttt{rec.autos}, \texttt{rec.sport.baseball},
+    \texttt{sci.electronics}, \texttt{sci.med} e \texttt{sci.space}. 
+
+    Ogni elemento del dataset rappresenta un singolo post, con vari utenti che mandano messaggi e discutono sul topic in esame. Ogni messaggio è a sua volta
+    suddiviso tra header e contenuto. In Figura \ref{fig:fig1} è possibile vedere l'inizio di un messaggio presente nel dataset.
+
+    % TODO:
+    % Distribuzione equa classi
+    % Distribuzione train e test set
+
 
     \thispagestyle{plain}
     \section{Preprocessing}

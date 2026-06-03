@@ -1,8 +1,8 @@
 \babel@toc {italian}{}\relax 
 \babel@toc {italian}{}\relax 
-\contentsline {section}{\numberline {1}Introduzione}{3}{}%
-\contentsline {section}{\numberline {2}Dataset}{4}{}%
-\contentsline {section}{\numberline {3}Preprocessing}{4}{}%
-\contentsline {section}{\numberline {4}Applicazione Modelli}{4}{}%
-\contentsline {section}{\numberline {5}Discussione}{4}{}%
-\contentsline {section}{\numberline {6}Conclusioni}{4}{}%
+\contentsline {section}{\numberline {1}Introduzione}{3}{section.1}%
+\contentsline {section}{\numberline {2}Dataset}{4}{section.2}%
+\contentsline {section}{\numberline {3}Preprocessing}{5}{section.3}%
+\contentsline {section}{\numberline {4}Applicazione Modelli}{5}{section.4}%
+\contentsline {section}{\numberline {5}Discussione}{5}{section.5}%
+\contentsline {section}{\numberline {6}Conclusioni}{5}{section.6}%
