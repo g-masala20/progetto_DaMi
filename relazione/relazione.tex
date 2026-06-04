@@ -1,6 +1,9 @@
 \documentclass[12pt, a4paper, twoside]{article}
 
 % Import
+\usepackage{booktabs}
+\usepackage{cleveref}
+\usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage{pifont}
@@ -19,6 +22,7 @@
 \usepackage{xcolor}
 \usepackage{caption}
 \usepackage{hyperref}
+\usepackage{chngcntr}
 
 % Impostazioni
 \raggedbottom
@@ -31,6 +35,12 @@
 \setlength{\parindent}{0pt}
 \renewcommand{\sectionmark}[1]{\markboth{#1}{}}
 \renewcommand{\cftbeforesecskip}{0pt} % Imposta lo spazio a 0 punti
+\counterwithin{figure}{section}
+
+% CleverRef settings
+\Crefname{figure}{Figura}{Figure}
+\Crefname{table}{Tabella}{Tabelle}
+\Crefname{section}{Sezione}{Sezioni}
 
 % Configurazione opzionale dello stile dei listings
 \lstset{
@@ -100,34 +110,35 @@
     e dedicati al dibattito su topic ben determinati. L'obiettivo centrale del progetto è l'utilizzo di diversi algoritmi
     di classificazione, spaziando dai modelli storici tradizionali (shallow learning) ai modelli a combinazione (ensemble learning),
     al fine di predire il topic di un post partendo dal contenuto dei suoi messaggi.
-    Lo studio non si è limita all'analisi delle prestazioni dei classificatori, ma si estende ai metodi di rappresentazione
+    Lo studio non si è limitato all'analisi delle prestazioni dei classificatori, ma si estende alla comparazione dei metodi di rappresentazione
     geometrica dei dati in input. a questo scopo sono stati utilizzati due metodi di vettorizzazione: 
     \textbf{TF-IDF} (Term Frequency-Inverse Document Frequency) e \textbf{GloVe} (Global Vectors for Word Representation). 
     
     \vspace{5mm}
     Il presente report è organizzato nei seguenti passi:
     \begin{itemize}
-        \item \textbf{Capitolo 2} - \textbf{Dataset} Analisi approfondita del dataset 20newsgroups, della sua struttura e delle sue categorie tematiche
+        \item \textbf{\Cref{sec:dataset}} - \textbf{Dataset} Analisi approfondita del dataset 20newsgroups, della sua struttura e delle sue categorie tematiche
         con approfondimento su quelle scelte.
 
-        \item \textbf{Capitolo 3} - \textbf{Preprocessing} Descrizione del flusso di elaborazione e trasformazione dei dati, differenziando i due metodi di vettorizzazione scelti,
+        \item \textbf{\Cref{sec:preprocessing}} - \textbf{Preprocessing} Descrizione del flusso di elaborazione e trasformazione dei dati, differenziando i due metodi di vettorizzazione scelti,
         con relativo approfondimento sulle scelte di implementazione prese durante lo sviluppo del progetto.
         
-        \item \textbf{Capitolo 4} - \textbf{Applicazione modelli} Elenco dei classificatori di utilizzati, con i relativi risultati di training e testing sul dataset
+        \item \textbf{\Cref{sec:application-of-models}} - \textbf{Applicazione modelli} Elenco dei classificatori utilizzati, con i relativi risultati di training e testing sul dataset
         e scelte implementative effettuate sugli iperparametri.
         
-        \item \textbf{Capitolo 5} - \textbf{Discussione} Argomentazione esaustiva sui risultati ottenuti con considerazioni argomentate e rappresentazione visiva dei dati, mediante tabelle e grafici informativi.
+        \item \textbf{\Cref{sec:discussion}} - \textbf{Discussione} Argomentazione esaustiva sui risultati ottenuti con considerazioni argomentate e rappresentazione visiva dei dati, mediante tabelle e grafici informativi.
 
     \end{itemize}
 
     \pagebreak
     \thispagestyle{plain}
     \section{Dataset}
-    Il dataset preso in esame è \textbf{20newsgroups}. Al suo interno riporta quasi 20.000 pubblicazioni (post) suddivise per 
-    categorie tematiche, per un totale di venti topic, distribuiti in \mbox{macro-categorie} e delle \mbox{sotto-categorie}. Queste vengono
-    esplicitate tramite una gerarchia, con la seguente struttura: \texttt{macrocategoria.sottocategorie}.
-    Il dataset è un insieme di documenti puramente testuali, ed è adatto per la valutazione delle prestazioni dei modelli di classificazione.
-    La documentazione relativa è possibile consultarla al seguente link: 
+    \label{sec:dataset}
+    Il dataset preso in esame è \textbf{20newsgroups}. Al suo interno riporta circa 18.000 pubblicazioni (post) suddivise per 
+    categorie tematiche, per un totale di venti topic, distribuiti in \mbox{macro-categorie} e \mbox{sotto-categorie}. Queste vengono
+    rappresentata in forma gerarchica, attraverso la seguente struttura: \texttt{macrocategoria.sottocategoria}.
+    Il dataset è un insieme di documenti puramente testuali, ed è adatto alla valutazione delle prestazioni dei modelli di classificazione.
+    La documentazione relativa è disponibile al seguente link: 
     
     \href{https://www.kaggle.com/datasets/crawford/20-newsgroups}{https://www.kaggle.com/datasets/crawford/20-newsgroups}.
 
@@ -152,33 +163,51 @@ Forwarded from Neal Ausman, Galileo Mission Director
 SPACECRAFT
 
 1.  On April 9, real-time commands were sent, as planned, to reacquire
-celestial reference after completion of the Low Gain Antenna (LGA-2)
+celestial reference   completion of the Low Gain Antenna (LGA-2)
 swing/Dual Drive Actuator (DDA) hammer activities.
 ...
     \end{lstlisting}
     \caption{Estratto di un post del topic \texttt{sci.space}}
-    \label{fig:fig1}
+    \label{fig:post-example}
 \end{figure}
 
-    Delle categorie presenti nel dataset sono state analizzate soltanto cinque per le elaborazioni richieste: \texttt{rec.autos}, \texttt{rec.sport.baseball},
-    \texttt{sci.electronics}, \texttt{sci.med} e \texttt{sci.space}. 
+    Delle categorie presenti nel dataset sono state analizzate soltanto cinque per le elaborazioni richieste. Queste sono riportate in \Cref{tab:newsgroups}.
 
-    Ogni elemento del dataset rappresenta un singolo post, con vari utenti che mandano messaggi e discutono sul topic in esame. Ogni messaggio è a sua volta
-    suddiviso tra header e contenuto. In Figura \ref{fig:fig1} è possibile vedere l'inizio di un messaggio presente nel dataset.
+\begin{table}[htbp]
+    \centering
+    \label{tab:newsgroups}
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule
+        \textbf{Gruppo di Discussione} & \textbf{Descrizione} \\
+        \midrule
+        \texttt{rec.autos} & Discussioni su motori, recensioni, manutenzione e novità automobilistiche. \\
+        \texttt{rec.sport.baseball} & Spazio per appassionati di baseball: analisi, statistiche e campionati. \\
+        \texttt{sci.electronics} & Forum su progettazione di circuiti, componenti e teoria elettronica. \\
+        \texttt{sci.med} & Discussioni su medicina, salute, ricerche scientifiche e trattamenti. \\
+        \texttt{sci.space} & Spazio dedicato all'esplorazione spaziale, astronomia e tecnologia dei razzi. \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Elenco dei newsgroup utilizzati nel progetto e relative descrizioni}
+\end{table}
+
+    Ogni elemento del dataset rappresenta un singolo post, con vari utenti che mandano messaggi e discutono sul topic in esame. Ciascun messaggio riporta una struttura con \textit{header}, \textit{body} e \textit{footer} (opzionale). In \Cref{fig:post-example} è possibile vedere l'inizio di un messaggio presente nel dataset.
 
     % TODO:
     % Distribuzione equa classi
     % Distribuzione train e test set
-
-
+    
     \thispagestyle{plain}
     \section{Preprocessing}
+    \label{sec:preprocessing}
+    
     
     \thispagestyle{plain}
     \section{Applicazione Modelli}
+    \label{sec:application-of-models}
     
     \thispagestyle{plain}
     \section{Discussione}
+    \label{sec:discussion}
     
     \thispagestyle{plain}
     \section{Conclusioni}
