@@ -95,21 +95,30 @@
     % Inizio Documento
     \thispagestyle{plain}
     \section{Introduzione}
-    Il seguente report affronta il problema della classificazione dei documenti testuali, nel campo dell'analisi delle informazioni
-    reperite da dei forum online, con lo scopo di dibattere e discutere su topic ben determinati. I forum in questione sono chiamati 
-    \textbf{newsgroup}, degli spazi virtuali creati su una rete di calcolatori distribuita e interconnessa su un sistema decentralizzato.
-    L'obiettivo che ci è stato posto per il progetto è quello di utilizzare diversi modelli di classificatori, sia shallow che ensemble, per
-    valutarne le prestazioni su un task di classificazione dei topic, a partire da un post dato in input. La valutazione delle prestazione
-    si è basata non solo su i modelli di classificazione, ma anche sui metodi di rappresentazione geometrica dei dati in input. A questo scopo
-    sono stati utilizzati due metodi di vettorizzazione: \textbf{TF-IDF} e \textbf{GloVe}. 
+    Questo report affronta il problema della classificazione dei documenti testuali, applicato all'analisi
+    delle interazioni interne dei newsgroup, spazi online storicamente strutturati su infrastrutture decentralizzate, 
+    e dedicati al dibattito su topic ben determinati. L'obiettivo centrale del progetto è l'utilizzo di diversi algoritmi
+    di classificazione, spaziando dai modelli storici tradizionali (shallow learning) ai modelli a combinazione (ensemble learning),
+    al fine di predire il topic di un post partendo dal contenuto dei suoi messaggi.
+    Lo studio non si è limita all'analisi delle prestazioni dei classificatori, ma si estende ai metodi di rappresentazione
+    geometrica dei dati in input. a questo scopo sono stati utilizzati due metodi di vettorizzazione: 
+    \textbf{TF-IDF} (Term Frequency-Inverse Document Frequency) e \textbf{GloVe} (Global Vectors for Word Representation). 
+    
+    \vspace{5mm}
+    Il presente report è organizzato nei seguenti passi:
+    \begin{itemize}
+        \item \textbf{Capitolo 2} - \textbf{Dataset} Analisi approfondita del dataset 20newsgroups, della sua struttura e delle sue categorie tematiche
+        con approfondimento su quelle scelte.
 
-    Nel secondo capitolo viene affrontata un'analisi approfondita del dataset \textbf{20newsgroups}, un'insieme di documenti testuali ampiamente
-    utilizzati nel campo del Natural Language Processing, con approfondimento su alcune categorie scelte.
-    Nel terzo capitolo viene descritto il flusso di elaborazione e trasformazione dei dati, differente per i due metodi di vettorizzazione scelti,
-    con relativo approfondimento sulle scelte prese durante lo sviluppo.
-    Nel quarto capitolo vengono elencati i classificatori di machine learning utilizzati, i relativi risultati di training e testing sul dataset
-    e scelte implementative effettuate sugli iperparametri.
-    Nel quinto capitolo vengono discussi esaustivamente i risultati ottenuti, con considerazioni argomentate, e rappresentazione visiva dei dati.
+        \item \textbf{Capitolo 3} - \textbf{Preprocessing} Descrizione del flusso di elaborazione e trasformazione dei dati, differenziando i due metodi di vettorizzazione scelti,
+        con relativo approfondimento sulle scelte di implementazione prese durante lo sviluppo del progetto.
+        
+        \item \textbf{Capitolo 4} - \textbf{Applicazione modelli} Elenco dei classificatori di utilizzati, con i relativi risultati di training e testing sul dataset
+        e scelte implementative effettuate sugli iperparametri.
+        
+        \item \textbf{Capitolo 5} - \textbf{Discussione} Argomentazione esaustiva sui risultati ottenuti con considerazioni argomentate e rappresentazione visiva dei dati, mediante tabelle e grafici informativi.
+
+    \end{itemize}
 
     \pagebreak
     \thispagestyle{plain}
