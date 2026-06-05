@@ -185,7 +185,6 @@ swing/Dual Drive Actuator (DDA) hammer activities.
 
     \begin{table}[htbp]
         \centering
-        \label{tab:newsgroups}
         \begin{tabularx}{\textwidth}{lX}
             \toprule
             \textbf{Gruppo di Discussione} & \textbf{Descrizione} \\
@@ -198,25 +197,30 @@ swing/Dual Drive Actuator (DDA) hammer activities.
             \bottomrule
         \end{tabularx}
         \caption{Elenco dei newsgroup utilizzati nel progetto e relative descrizioni}
+        \label{tab:newsgroups}
     \end{table}
     
-    Il progetto è stato realizzato con l'ausilio dell'infrastruttura di Jupyter, il linguaggio di programmazione Python e delle sue librerie fondamentali,
-    come pandas, scikit-learn, NumPy, Matplotlib. Il dataset è stato caricato in locale tramite la funzione \texttt{datasets.fetch\_20newsgroups} di scikit-learn.
-    Il dataset è stato successivamente ripartito in \textbf{training set} e \textbf{test set}, come rappresentato in figura.
+    Il progetto è stato realizzato con l'ausilio dell'infrastruttura di Jupyter, il linguaggio di programmazione Python 
+    e delle sue librerie fondamentali, come pandas, scikit-learn, NumPy, Matplotlib. Il dataset è stato caricato in 
+    locale tramite la funzione \texttt{datasets.fetch\_20newsgroups} di scikit-learn.
+    Il dataset è stato successivamente ripartito in \textbf{training set} e \textbf{test set}, come rappresentato 
+    in \ref{fig:distribuzione-set}.
+    
     \begin{figure}[ht]
         \centering
         \includegraphics[width=0.6\linewidth]{distribuzione_set.png}
+        \caption{Distribuzione degli oggetti tra training set e test set}
+        \label{fig:distribuzione-set}
     \end{figure}
 
-    In seguito viene rappresentata la equa distribuzione delle classi all'interno del training e test set, tenendo presente che la classi rappresentano i gruppi di discussione.
+    In \ref{fig:distribuzione-classi} viene rappresentata la equa distribuzione delle classi all'interno del training 
+    e test set, tenendo presente che la classi rappresentano i gruppi di discussione.
     \begin{figure}[ht]
         \centering
         \includegraphics[width=1\linewidth]{distribuzione_classi.png}
+        \caption{Distribuzione delle classi nel dataset in esame}
+        \label{fig:distribuzione-classi}
     \end{figure}
-
-
-    % TODO:
-    % Distribuzione train e test set
     
     \pagebreak
     \thispagestyle{plain}
