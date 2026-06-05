@@ -2,7 +2,7 @@
 \babel@toc {italian}{}\relax 
 \contentsline {section}{\numberline {1}Introduzione}{3}{section.1}%
 \contentsline {section}{\numberline {2}Dataset}{4}{section.2}%
-\contentsline {section}{\numberline {3}Preprocessing}{6}{section.3}%
-\contentsline {section}{\numberline {4}Applicazione Modelli}{6}{section.4}%
-\contentsline {section}{\numberline {5}Discussione}{6}{section.5}%
-\contentsline {section}{\numberline {6}Conclusioni}{6}{section.6}%
+\contentsline {section}{\numberline {3}Preprocessing}{7}{section.3}%
+\contentsline {section}{\numberline {4}Applicazione Modelli}{8}{section.4}%
+\contentsline {section}{\numberline {5}Discussione}{8}{section.5}%
+\contentsline {section}{\numberline {6}Conclusioni}{8}{section.6}%

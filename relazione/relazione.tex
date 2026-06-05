@@ -222,14 +222,44 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         \label{fig:distribuzione-classi}
     \end{figure}
     
-    \pagebreak
+    \clearpage
     \thispagestyle{plain}
     \section{Preprocessing}
     \label{sec:preprocessing}
-    La fase di preprocessing si concentra sulla trasformazione dei dati testuali in valori numerici attraverso due metodi di vettorizzazione: TF-IDF ed \textit{embeddings} GloVe. Il primo metodo prevede la trasformazione di ciascun documento in un vettore delle frequenze dei termini \mbox{intra-documento}, pesate attraverso l'inverso delle frequenze \mbox{inter-documento}. Il secondo metodo si basa su un dizionario di embeddings, in cui a ogni parola del dizionario corrisponde un vettore ottenuto da un modello preaddestrato.
-    Mentre TF-IDF tiene in considerazione esclusivamente le frequenze dei termini, secondo l'intuizione che determinati termini appaiono più frequentemente in corrispondenza di determinate tematiche e che termini più rari sono più informativi in quanto specifici, gli embeddings GloVe sono stati ottenuti tramite addestramento specifico per riportare in uno spazio a $N$ dimensioni il significato semantico delle parole, in maniera tale che parole con un significato semantico simile siano meno distanti.
-    Abbiamo comparato i due metodi di rappresentazione dei dati utilizzando 100 \textit{features} (i.e. vettori $100\text{d}$) per ciascun metodo.
+    La fase di preprocessing è finalizzata sulla conversione dei dati testuali grezzi, contenuti nei documenti del dataset,
+    in rappresentazioni numeriche strutturate, tramite un processo chiamato vettorizzazione. In questo progetto sono stati
+    implementati e confrontati due approcci metodologici: la rappresentazione statico-frequenziale \textbf{TF-IDF} e 
+    l'utilizzo di vettori semantici densi tramite \textbf{embeddings GloVe}. Entrambe le metodologie sono state configurate
+    per lavorare su uno spazio lineare a cento dimensioni, come da specifiche.
     
+    \begin{itemize}
+        
+        \item \textbf{Vettorizzazione TF-IDF} \\
+        Il metodo TF-IDF (Term Frequency-Inverse Document Frequency) costruisce un dizionario interno al modello,
+        inserendo al suo interno ogni parola presente nel dataset. Successivamente, per ogni parola presente nel dizionario,
+        viene calcolato il suo punteggio TF-IDF. Il nucleo dell'algoritmo prevede il calcolo della frequenza di una parola
+        all'interno del singolo post (frequenza \mbox{intra-documento}) pesata inversamente rispetto alla sua diffusione nell'
+        intero dataset (frequenza \mbox{inter-documento}). L'intuzione è quella di restituire un valore TF-IDF più alto 
+        alle parole rare, in quanto in possesso di elevato potere discriminante l'identificazione del topic di 
+        appartenenza dell'intero messaggio.
+
+        \item \textbf{Embedding Semantici GloVe} \\
+        A differenza dell'approccio probabilistico e lessicale di TF-IDF, GloVe si appoggia ad un dizionario 
+        di vettori pre-addestrato. Ogni parola viene proiettata su uno spazio geometrico continuo a $N$ dimensioni,
+        in cui le coordinate precise di un termine sono in grado di rappresentare il suo significato semantico. 
+        Questa rappresentazione ha il vantaggio che, parole con significato semantico simile, risulteranno vicine geometricamente
+        tramite distanza euclidea. Ciò permette ai classificatori di intercettare relazioni tra parole sinonime e contesti
+        logici che il semplice calcolo delle frequenze non sarebbe in grado di scoprire.
+
+    \end{itemize}
+
+    % Una volta che sono stati introdotti i due metodi di vettorizzazione, 
+    % è necessario parlare dei processi di elaborazione e trasformazione
+    % effettivamente svolti all'interno del dataset. Inoltre, le specifiche
+    % parlano di grafici e relativa documentazione che noi in questo momento non abbiamo
+    
+
+    \clearpage
     \thispagestyle{plain}
     \section{Applicazione Modelli}
     \label{sec:application-of-models}
