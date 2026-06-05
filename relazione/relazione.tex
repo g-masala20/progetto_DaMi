@@ -2,7 +2,6 @@
 
 % Import
 \usepackage{booktabs}
-\usepackage{cleveref}
 \usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
@@ -22,6 +21,7 @@
 \usepackage{xcolor}
 \usepackage{caption}
 \usepackage{hyperref}
+\usepackage{cleveref}
 \usepackage{chngcntr}
 
 % Impostazioni
@@ -134,12 +134,11 @@
     \thispagestyle{plain}
     \section{Dataset}
     \label{sec:dataset}
-    Il dataset preso in esame è \textbf{20newsgroups}. Al suo interno riporta circa 18.000 pubblicazioni (post) suddivise per 
-    categorie tematiche, per un totale di venti topic, distribuiti in \mbox{macro-categorie} e \mbox{sotto-categorie}. Queste vengono
-    rappresentata in forma gerarchica, attraverso la seguente struttura: \texttt{macrocategoria.sottocategoria}.
-    Il dataset è un insieme di documenti puramente testuali, ed è adatto alla valutazione delle prestazioni dei modelli di classificazione.
-    La documentazione relativa è disponibile al seguente link: 
-    
+    Il dataset di riferimento utilizzato per la sperimentazione è \textbf{20newsgroups}, una corpus di circa 18.000 pubblicazioni
+    ampiamente utilizzata nel Natural Language Processing (NLP), e distribuite all'interno di venti differenti categorie tematiche. 
+    Una caratteristica di questo dataset è l'organizzazione in forma gerarchica dei suoi topic, formalizzata dalla seguente struttura:
+    \texttt{macrocategoria.sottocategoria} (con la possibilità di inserire ulteriori sottocategorie, successivamente alla prima).
+    La documentazione relativa e i dati di partenza sono consultabili liberamente al seguente link:
     \href{https://www.kaggle.com/datasets/crawford/20-newsgroups}{https://www.kaggle.com/datasets/crawford/20-newsgroups}.
 
 \begin{figure}[ht]
@@ -171,35 +170,61 @@ swing/Dual Drive Actuator (DDA) hammer activities.
     \label{fig:post-example}
 \end{figure}
 
-    Delle categorie presenti nel dataset sono state analizzate soltanto cinque per le elaborazioni richieste. Queste sono riportate in \Cref{tab:newsgroups}.
+    Ai fini dell'eleborazione del dataset, è stato utilizzato solo un sottoinsieme di cinque categorie per analizzare il comportamento dei classificatori, di cui
+    alcune rappresentanti tematiche potenzialmente sovrapponibili concenttualmente. La totalità delle categorie utilizzate in questo scopo sono riportate in \Cref{tab:newsgroups}.
+    Dal punto di vista strutturale, ogni singolo documento del dataset corrisponde a un post creato da un utente. In linea con gli standard Usenet, ogni post è strutturato
+    nel seguente modo:
 
-\begin{table}[htbp]
-    \centering
-    \label{tab:newsgroups}
-    \begin{tabularx}{\textwidth}{lX}
-        \toprule
-        \textbf{Gruppo di Discussione} & \textbf{Descrizione} \\
-        \midrule
-        \texttt{rec.autos} & Discussioni su motori, recensioni, manutenzione e novità automobilistiche. \\
-        \texttt{rec.sport.baseball} & Spazio per appassionati di baseball: analisi, statistiche e campionati. \\
-        \texttt{sci.electronics} & Forum su progettazione di circuiti, componenti e teoria elettronica. \\
-        \texttt{sci.med} & Discussioni su medicina, salute, ricerche scientifiche e trattamenti. \\
-        \texttt{sci.space} & Spazio dedicato all'esplorazione spaziale, astronomia e tecnologia dei razzi. \\
-        \bottomrule
-    \end{tabularx}
-    \caption{Elenco dei newsgroup utilizzati nel progetto e relative descrizioni}
-\end{table}
+    \begin{itemize}
+        \item \textbf{Header}: Una sezione iniziale del documento, dove vengono inseriti alcuni metadati tecnici, come l'indirizzo email del mittente, il
+        server di provenienza e l'oggetto del messaggio.
+        \item \textbf{Body} Il testo effettivo del post scritto dall'utente, un insieme di frasi in linguaggio naturale costituenti il vero nucleo informativo.
+        \item \textbf{Footer} Una sezione finale dedicata alle firme automatiche o citazioni personali
+    \end{itemize}
+    Un post di esempio, che rispetta questa struttura, è osservabile in \ref{fig:post-example}.
 
-    Ogni elemento del dataset rappresenta un singolo post, con vari utenti che mandano messaggi e discutono sul topic in esame. Ciascun messaggio riporta una struttura con \textit{header}, \textit{body} e \textit{footer} (opzionale). In \Cref{fig:post-example} è possibile vedere l'inizio di un messaggio presente nel dataset.
+    \begin{table}[htbp]
+        \centering
+        \label{tab:newsgroups}
+        \begin{tabularx}{\textwidth}{lX}
+            \toprule
+            \textbf{Gruppo di Discussione} & \textbf{Descrizione} \\
+            \midrule
+            \texttt{rec.autos} & Discussioni su motori, recensioni, manutenzione e novità automobilistiche. \\
+            \texttt{rec.sport.baseball} & Spazio per appassionati di baseball: analisi, statistiche e campionati. \\
+            \texttt{sci.electronics} & Forum su progettazione di circuiti, componenti e teoria elettronica. \\
+            \texttt{sci.med} & Discussioni su medicina, salute, ricerche scientifiche e trattamenti. \\
+            \texttt{sci.space} & Spazio dedicato all'esplorazione spaziale, astronomia e tecnologia dei razzi. \\
+            \bottomrule
+        \end{tabularx}
+        \caption{Elenco dei newsgroup utilizzati nel progetto e relative descrizioni}
+    \end{table}
+    
+    Il progetto è stato realizzato con l'ausilio dell'infrastruttura di Jupyter, il linguaggio di programmazione Python e delle sue librerie fondamentali,
+    come pandas, scikit-learn, NumPy, Matplotlib. Il dataset è stato caricato in locale tramite la funzione \texttt{datasets.fetch\_20newsgroups} di scikit-learn.
+    Il dataset è stato successivamente ripartito in \textbf{training set} e \textbf{test set}, come rappresentato in figura.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.6\linewidth]{distribuzione_set.png}
+    \end{figure}
+
+    In seguito viene rappresentata la equa distribuzione delle classi all'interno del training e test set, tenendo presente che la classi rappresentano i gruppi di discussione.
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=1\linewidth]{distribuzione_classi.png}
+    \end{figure}
+
 
     % TODO:
-    % Distribuzione equa classi
     % Distribuzione train e test set
     
+    \pagebreak
     \thispagestyle{plain}
     \section{Preprocessing}
     \label{sec:preprocessing}
-    
+    La fase di preprocessing si concentra sulla trasformazione dei dati testuali in valori numerici attraverso due metodi di vettorizzazione: TF-IDF ed \textit{embeddings} GloVe. Il primo metodo prevede la trasformazione di ciascun documento in un vettore delle frequenze dei termini \mbox{intra-documento}, pesate attraverso l'inverso delle frequenze \mbox{inter-documento}. Il secondo metodo si basa su un dizionario di embeddings, in cui a ogni parola del dizionario corrisponde un vettore ottenuto da un modello preaddestrato.
+    Mentre TF-IDF tiene in considerazione esclusivamente le frequenze dei termini, secondo l'intuizione che determinati termini appaiono più frequentemente in corrispondenza di determinate tematiche e che termini più rari sono più informativi in quanto specifici, gli embeddings GloVe sono stati ottenuti tramite addestramento specifico per riportare in uno spazio a $N$ dimensioni il significato semantico delle parole, in maniera tale che parole con un significato semantico simile siano meno distanti.
+    Abbiamo comparato i due metodi di rappresentazione dei dati utilizzando 100 \textit{features} (i.e. vettori $100\text{d}$) per ciascun metodo.
     
     \thispagestyle{plain}
     \section{Applicazione Modelli}
