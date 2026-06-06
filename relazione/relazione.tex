@@ -236,8 +236,8 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         
         \item \textbf{Vettorizzazione TF-IDF} \\
         Il metodo TF-IDF (Term Frequency-Inverse Document Frequency) costruisce un dizionario interno al modello,
-        inserendo al suo interno ogni parola presente nel dataset. Successivamente, per ogni parola presente nel dizionario,
-        viene calcolato il suo punteggio TF-IDF. Il nucleo dell'algoritmo prevede il calcolo della frequenza di una parola
+        inserendo al suo interno ogni parola presente nel dataset. Per ogni parola presente nel dizionario,
+        viene calcolato il suo punteggio IDF. Il nucleo dell'algoritmo prevede il calcolo della frequenza di una parola
         all'interno del singolo post (frequenza \mbox{intra-documento}) pesata inversamente rispetto alla sua diffusione nell'
         intero dataset (frequenza \mbox{inter-documento}). L'intuzione è quella di restituire un valore TF-IDF più alto 
         alle parole rare, in quanto in possesso di elevato potere discriminante l'identificazione del topic di 
@@ -253,10 +253,16 @@ swing/Dual Drive Actuator (DDA) hammer activities.
 
     \end{itemize}
 
+    % Bisogna parlare anche delle stopwords, in quanto ricorrente per entrambe le rappresentazioni vettoriali
+
     % Una volta che sono stati introdotti i due metodi di vettorizzazione, 
     % è necessario parlare dei processi di elaborazione e trasformazione
     % effettivamente svolti all'interno del dataset. Inoltre, le specifiche
     % parlano di grafici e relativa documentazione che noi in questo momento non abbiamo
+
+    % TfIDF: togliere stopwords, impostare max 100 dimensioni e scalare il training set e test set
+
+    % GloVe: apertura dizionario (embeddings), preprocessing (minuscolo, tolta punteggiatura, tokenizzato, rimozione stopword)
     
 
     \clearpage
