@@ -41,6 +41,7 @@
 \Crefname{figure}{Figura}{Figure}
 \Crefname{table}{Tabella}{Tabelle}
 \Crefname{section}{Sezione}{Sezioni}
+\Crefname{equation}{Equazione}{Equazioni}
 
 % Configurazione opzionale dello stile dei listings
 \lstset{
@@ -241,7 +242,15 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         all'interno del singolo post (frequenza \mbox{intra-documento}) pesata inversamente rispetto alla sua diffusione nell'
         intero dataset (frequenza \mbox{inter-documento}). L'intuzione è quella di restituire un valore TF-IDF più alto 
         alle parole rare, in quanto in possesso di elevato potere discriminante l'identificazione del topic di 
-        appartenenza dell'intero messaggio.
+        appartenenza dell'intero messaggio. In \Cref{eq:tf-idf} è riportata la formula utilizzata da \texttt{TfidfVectorizer()}, implementato da \texttt{Scikit-learn}, per il calcolo del punteggio TF-IDF per un dato termine $t$ all'interno di un documento $d$. Si noti che i parametri di \textit{default} prevedono lo \textit{smoothing} aggiungendo $1$ per evitare la divisione per zero.
+
+        \begin{equation}
+        \begin{split}
+            &\text{TF-IDF} = \text{tf}(t,d) \times \text{idf}(t) \\ \\
+            &\text{idf}(t) = \log\left(\frac{1+N}{1+\text{df}(t)}\right)+1
+        \end{split}
+        \label{eq:tf-idf}
+        \end{equation}
 
         \item \textbf{Embedding Semantici GloVe} \\
         A differenza dell'approccio probabilistico e lessicale di TF-IDF, GloVe si appoggia ad un dizionario 
@@ -251,6 +260,16 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         tramite distanza euclidea. Ciò permette ai classificatori di intercettare relazioni tra parole sinonime e contesti
         logici che il semplice calcolo delle frequenze non sarebbe in grado di scoprire.
 
+    \end{itemize}
+
+    In entrambi i casi, prima della vettorizzazione, avviene un passo di normalizzazione del testo e di pulizia dalle \textit{stop-words}. Queste sono tutti i termini di un linguaggio che non trasmettono un significato semantico particolare ma che fanno parte della grammatica. Un esempio di tali parole è dato da: "is", "the" e "of" nella lingua inglese.
+    
+    Nel caso di TF-IDF, questa fase di pulizia avviene internamente alla funzione \texttt{TfidfVectorizer()} impostando il parametro \texttt{stop\_words="english"}.
+    Nel caso di GloVe, abbiamo implementato le seguenti funzioni:
+    \begin{itemize}
+        \item \texttt{preprocess\_text(text)} : esegue il \textit{lowecasing}, elimina caratteri speciali e punteggiatura, rimuove le stop-words (ovvero le occorrenza di \texttt{sktext.ENGLISH\_STOP\_WORDS} all'interno del documento) ed effettua la \textit{tokenization} delle parole; 
+        \item \texttt{load\_embeddings(file\_path)} : carica il dizionario degli embeddings a partire dal file \texttt{glove.6B.100d.txt}, che presenta al suo interno un vettore di 100 valori numerici per ciascuna parola;
+        \item \texttt{get\_document\_embedding(tokens, glove\_embeddings)} : per ciascun token di un documento, ottiene l'embedding corrispondente, se presente nel dizionario GloVe, e calcola la media di tutti questi embedding per ottenere un unico vettore che rappresenta il documento. Se nessun token è presente all'interno del dizionario, il document embedding corrispondente è il vettore nullo.  
     \end{itemize}
 
     % Bisogna parlare anche delle stopwords, in quanto ricorrente per entrambe le rappresentazioni vettoriali

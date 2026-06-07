@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.2)  6 JUN 2026 12:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2026.6.2)  7 JUN 2026 14:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -523,7 +523,7 @@ Package chngcntr Info: \counterwithout already defined.
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 6
-5.
+6.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
@@ -536,24 +536,24 @@ File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 (./relazione.aux)
 \openout1 = `relazione.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -577,8 +577,8 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \it@ocap on input line 65.
-LaTeX Info: Redefining \it@ccap on input line 65.
+LaTeX Info: Redefining \it@ocap on input line 66.
+LaTeX Info: Redefining \it@ccap on input line 66.
 
 
 File italian.ldf warning: 
@@ -586,7 +586,7 @@ italian.ldf    With OT1 encoding guillemets are poorly faked
 italian.ldf    Use T1 encoding
 italian.ldf    or specify a font with command \CaporaliFrom
 italian.ldf    See the documentation concerning the babel-italian typesetting
-italian.ldf    on input line 65.
+italian.ldf    on input line 66.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -626,7 +626,7 @@ italian.ldf    on input line 65.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring OFF on input line 65.
+Package hyperref Info: Link coloring OFF on input line 66.
 (./relazione.out) (./relazione.out)
 \@outlinefile=\write3
 \openout3 = `relazione.out'.
@@ -634,7 +634,7 @@ Package hyperref Info: Link coloring OFF on input line 65.
 <logounica.png, id=28, 803.0pt x 803.0pt>
 File: logounica.png Graphic file (type png)
 <use logounica.png>
-Package pdftex.def Info: logounica.png  used on input line 71.
+Package pdftex.def Info: logounica.png  used on input line 72.
 (pdftex.def)             Requested size: 91.04742pt x 91.03813pt.
  [1
 
@@ -645,18 +645,18 @@ st/fonts/enc/dvips/base/8r.enc} <./logounica.png>] (./relazione.toc)
 
  [2]
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
-20.
+21.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [3]
 LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 1
-40.
+41.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-Overfull \hbox (10.35219pt too wide) in paragraph at lines 203--208
+Overfull \hbox (10.35219pt too wide) in paragraph at lines 204--209
 \OT1/ptm/m/n/12 tlib. Il da-ta-set []e sta-to ca-ri-ca-to in lo-ca-le tra-mi-te
  la fun-zio-ne \OT1/pcr/m/n/12 datasets.fetch[]20newsgroups
  []
@@ -665,42 +665,67 @@ Overfull \hbox (10.35219pt too wide) in paragraph at lines 203--208
 <distribuzione_set.png, id=90, 281.1303pt x 281.1303pt>
 File: distribuzione_set.png Graphic file (type png)
 <use distribuzione_set.png>
-Package pdftex.def Info: distribuzione_set.png  used on input line 211.
+Package pdftex.def Info: distribuzione_set.png  used on input line 212.
 (pdftex.def)             Requested size: 273.14923pt x 273.15076pt.
 <distribuzione_classi.png, id=92, 859.2903pt x 353.4003pt>
 File: distribuzione_classi.png Graphic file (type png)
 <use distribuzione_classi.png>
-Package pdftex.def Info: distribuzione_classi.png  used on input line 220.
+Package pdftex.def Info: distribuzione_classi.png  used on input line 221.
 (pdftex.def)             Requested size: 455.24411pt x 187.22575pt.
- [5 <./distribuzione_set.png>] [6 <./distribuzione_classi.png>] [7
+ [5 <./distribuzione_set.png>] [6 <./distribuzione_classi.png>]
 
-] [8
+LaTeX Warning: Reference `eq:tf-idf' on page 1 undefined on input line 245.
 
-]
-(./relazione.aux)
+
+Overfull \hbox (32.78017pt too wide) in paragraph at lines 267--269
+[]\OT1/ptm/m/n/12 Nel ca-so di TF-IDF, que-sta fa-se di pu-li-zia av-vie-ne in-
+ter-na-men-te al-la fun-zio-ne \OT1/pcr/m/n/12 TfidfVectorizer()
+ []
+
+
+Overfull \hbox (12.1768pt too wide) in paragraph at lines 270--271
+\OT1/ptm/m/n/12 gia-tu-ra, ri-muo-ve le stop-words (ov-ve-ro le oc-cor-ren-za d
+i \OT1/pcr/m/n/12 sktext.ENGLISH[]STOP[]WORDS
+ []
+
+[7
+
+] [8] [9
+
+] (./relazione.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `relazione.out' has not changed.
 (rerunfilecheck)             Checksum: 9BAD78318E0FD96090FFE8E6CA25C771;631.
  ) 
 Here is how much of TeX's memory you used:
- 16904 strings out of 474222
- 277973 string characters out of 5748734
+ 16917 strings out of 474222
+ 278187 string characters out of 5748734
  1972975 words of memory out of 5000000
- 38902 multiletter control sequences out of 15000+600000
- 574708 words of font info for 70 fonts, out of 8000000 for 9000
+ 38911 multiletter control sequences out of 15000+600000
+ 577406 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,385b,1299s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/urw/times/utmr8a.pfb>
-Output written on relazione.pdf (8 pages, 200984 bytes).
+ 75i,19n,79p,467b,1299s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/time
+s/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on relazione.pdf (9 pages, 242228 bytes).
 PDF statistics:
- 148 PDF objects out of 1000 (max. 8388607)
- 122 compressed objects within 2 object streams
- 42 named destinations out of 1000 (max. 500000)
+ 174 PDF objects out of 1000 (max. 8388607)
+ 139 compressed objects within 2 object streams
+ 44 named destinations out of 1000 (max. 500000)
  64 words of extra memory for PDF output out of 10000 (max. 10000000)
 
