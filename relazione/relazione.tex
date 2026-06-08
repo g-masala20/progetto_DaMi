@@ -255,7 +255,7 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         \label{eq:tf-idf}
         \end{equation}
 
-        \vspace{0.9cm}
+        \vspace{0.7cm}
 
         \item \textbf{Embedding Semantici GloVe} \\
         A differenza dell'approccio probabilistico e lessicale di TF-IDF, GloVe si appoggia ad un dizionario 
@@ -267,14 +267,27 @@ swing/Dual Drive Actuator (DDA) hammer activities.
 
     \end{itemize}
 
-    In entrambi i casi, prima della vettorizzazione, avviene un passo di normalizzazione del testo e di pulizia dalle \textit{stop-words}. Queste sono tutti i termini di un linguaggio che non trasmettono un significato semantico particolare ma che fanno parte della grammatica. Un esempio di tali parole è dato da: "is", "the" e "of" nella lingua inglese.
+    In entrambi i casi, prima della vettorizzazione, viene eseguito un passo di normalizzazione del testo e di pulizia 
+    dalle stop-words. Queste sono parole di uso comune in un linguaggio che non trasmettono un significato semantico
+    saliente, che tuttavia fanno parte della grammatica. Un esempio di tali parole sono gli articoli, presenti sia nella
+    lingua italiana che in quella inglese.
     
-    Nel caso di TF-IDF, questa fase di pulizia avviene internamente alla funzione \texttt{TfidfVectorizer()} impostando il parametro \texttt{stop\_words="english"}.
-    Nel caso di GloVe, abbiamo implementato le seguenti funzioni:
+    Nel caso di TF-IDF, questa fase di pulizia avviene internamente alla funzione \texttt{TfidfVectorizer()} impostando il 
+    parametro \texttt{stop\_words="english"}. Nel caso di GloVe, abbiamo implementato le seguenti funzioni:
     \begin{itemize}
-        \item \texttt{preprocess\_text(text)}: esegue il \textit{lowercasing}, elimina caratteri speciali e punteggiatura, rimuove le stop-words (ovvero le occorrenza di \texttt{sktext.ENGLISH\_STOP\_WORDS} all'interno del documento) ed effettua la \textit{tokenization} delle parole; 
-        \item \texttt{load\_embeddings(file\_path)}: carica il dizionario degli embeddings a partire dal file \texttt{glove.6B.100d.txt}, che presenta al suo interno un vettore di 100 valori numerici per ciascuna parola;
-        \item \texttt{get\_document\_embedding(tokens, glove\_embeddings)}: per ciascun token di un documento, ottiene l'embedding corrispondente, se presente nel dizionario GloVe, e calcola la media di tutti questi embedding per ottenere un unico vettore che rappresenta il documento. Se nessun token è presente all'interno del dizionario, il document embedding corrispondente è il vettore nullo.  
+
+        \item \texttt{preprocess\_text(text)}: esegue il lowercasing, elimina caratteri speciali e punteggiatura, rimuove 
+        le stop-words (ovvero le occorrenza di \texttt{sktext.ENGLISH\_STOP\_WORDS} all'interno del documento) ed effettua 
+        la tokenization delle parole;
+
+        \item \texttt{load\_embeddings(file\_path)}: carica il dizionario degli embeddings a partire dal file 
+        \texttt{glove.6B.100d.txt}, che presenta al suo interno un vettore di 100 valori numerici per ciascuna parola;
+        
+        \item \texttt{get\_document\_embedding(tokens, glove\_embeddings)}: per ciascun token di un documento, ottiene 
+        l'embedding corrispondente, se presente nel dizionario GloVe, e calcola la media di tutti questi embedding per 
+        ottenere un unico vettore che rappresenta il documento. Se nessun token è presente all'interno del dizionario, 
+        il document embedding corrispondente è il vettore nullo.  
+    
     \end{itemize}
 
 
@@ -283,22 +296,54 @@ swing/Dual Drive Actuator (DDA) hammer activities.
     \section{Applicazione Modelli}
     \label{sec:application-of-models}
 
-    L'esperimento ha previsto l'addestramento di sei modelli di classificazione multiclasse. Di seguito viene riportata, per ciascum modello addestrato, una breve descrizione accompagnata dalla spiegazione della scelta degli iperparametri.
+    La fase sperimentale ha previsto l'addestramento di sei modelli di classificazione multiclasse. Di seguito si propone, 
+    per ciascun algoritmo, una breve descrizione unita alla giustificazione metodologica della scelta dei relativi iperparametri.
+    
     \begin{itemize}
-    \item \textbf{Decision Tree} (DT) \\
-    Classificatore di shallow learning, basato su un albero decisionale in cui i nodi foglia rappresentano le classi e i nodi genitore rappresentano criteri decisionali. Nello specifico, la sua implementazione su scikit-learn avviene tramite albero binario. 
     
-    È stata impostata una profondità massima \texttt{max\_depth=8}, che è piuttosto limitata, per evitare \textit{overfitting} sul dataset. Una misura di profondità eccessivamente alta protrebbe infatti condurre l'albero a imparare i criteri esatti per la classificazione. Invece, in tale modo abbiamo al più $2^{(8-1)}=128$ nodi decisionali, che si avvicinano al numero di features utilizzate. 
+        \item \textbf{Decision Tree} (DT) \\
+        Classificatore di shallow learning, basato su un albero decisionale in cui i nodi foglia rappresentano le classi 
+        e i nodi genitore rappresentano criteri decisionali. Nello specifico, la sua implementazione su scikit-learn 
+        avviene tramite albero binario. È stata impostata una profondità massima \texttt{max\_depth=8}, che è piuttosto 
+        limitata, per evitare overfitting sul dataset. Una misura di profondità eccessivamente alta 
+        potrebbe infatti condurre l'albero a imparare i criteri esatti per la classificazione. Invece, in tale modo 
+        abbiamo al più $2^{(8-1)}=128$ nodi decisionali, che si avvicinano al numero di features utilizzate. È stato 
+        impostato un limite inferiore al numero di campioni necessari in una classe per eseguire uno split. Il valore 
+        scelto è \texttt{min\_samples\_split=0.01}, corrispondente all'$1\%$ del dataset. Ciò garantisce una crescita 
+        più controllata dell'albero.
+        
+        \item \textbf{K-Nearest Neighbors} (KNN) \\
+        Il KNN viene ampiamente considerato uno dei più semplici algoritmi di machine learning. Un oggetto è classificato
+        in base alla maggioranza dei voti dei suoi $k$ vicini (con $k$ un iperparametro intero positivo). La sua implementazione
+        su scikit-learn non ha una vera fase di addestramento, si limita a inserire l'intero dataset sulla memoria centrale.
+        Questa implementazione ha il vantaggio di avere un costo computazionale pari a $O(1)$, tuttavia risulta in pessime 
+        prestazioni con dataset molto grandi.
     
-    È stato impostato un limite inferiore al numero di campioni necessari in una classe per eseguire uno split. Il valore scelto è \texttt{min\_samples\_split=0.01}, corrispondente all'$1\%$ del dataset. Ciò garantisce una crescita più controllata dell'albero.
+        \item \textbf{Multi Layer Perceptron} (MLP) \\
+        Il MLP è un modello di rete neurale artificiale, costruita con strati multipli di nodi in un grafo diretto, di cui ogni
+        strato è direttamente connesso al successivo. Il suo obiettivo è mappare un insieme di dati di ingresso in un insieme
+        di dati di uscita appropiati.
+
+        \item \textbf{Random Forest} (RF) \\
+        IL RF è un classificatore di ensemble learning, ottenuto dall'aggregazione tramite bagging di diversi Decision Tree, nasce
+        come soluzione atta a ridurre l'overfitting del training set di quest'ultimi.
+
+        \item \textbf{Adaptive Boosting} (AdaBoost, AB) \\
+        L'intuizione che sta alla base dell'Adaboost risiede nell'addestramento sequenziale di un insieme di classificatori 
+        deboli (weak learners). A differenza dei metodi di bagging (come, ad esempio, il RF), in cui i modelli operano in 
+        parallelo e con parità di potere decisionale, Adaboost adotta un approccio in cui ogni nuovo stimatore viene addestrato
+        focalizzandosi prevalentemente sui punti classificati erroneamente dagli scorsi stimatori.
+
+        \item \textbf{eXtreme Gradient Boosting} (XGBoost, XGB) \\
+
     
-    \item \textbf{K-Nearest Neighbors} (KNN) \\
-    \item \textbf{Multi Layer Perceptron} (MLP) \\
-    \item \textbf{Random Forest} (RF) \\
-    \item \textbf{Adaptive Boosting} (AdaBoost, AB) \\
-    \item \textbf{eXtreme Gradient Boosting} (XGBoost, XGB) \\
     \end{itemize}
     
+    % Oltre all'elenco di modelli e iperparametri
+    % bisogna parlare dell'addestramento in se
+    % esponendo grafici di training
+
+    \clearpage
     \thispagestyle{plain}
     \section{Discussione}
     \label{sec:discussion}
