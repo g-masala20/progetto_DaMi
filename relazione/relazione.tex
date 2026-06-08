@@ -23,6 +23,7 @@
 \usepackage{hyperref}
 \usepackage{cleveref}
 \usepackage{chngcntr}
+\usepackage{subcaption}
 
 % Impostazioni
 \raggedbottom
@@ -103,6 +104,7 @@
     \tableofcontents
     \pagebreak
 
+    
     % Inizio Documento
     \thispagestyle{plain}
     \section{Introduzione}
@@ -112,8 +114,9 @@
     di classificazione, spaziando dai modelli storici tradizionali (shallow learning) ai modelli a combinazione (ensemble learning),
     al fine di predire il topic di un post partendo dal contenuto dei suoi messaggi.
     Lo studio non si è limitato all'analisi delle prestazioni dei classificatori, ma si estende alla comparazione dei metodi di rappresentazione
-    geometrica dei dati in input. a questo scopo sono stati utilizzati due metodi di vettorizzazione: 
-    \textbf{TF-IDF} (Term Frequency-Inverse Document Frequency) e \textbf{GloVe} (Global Vectors for Word Representation). 
+    geometrica dei dati in input. A questo scopo sono stati utilizzati due metodi di vettorizzazione: 
+    \textbf{TF-IDF} (Term Frequency-Inverse Document Frequency) e \textbf{GloVe} (Global Vectors for Word Representation). Il progetto è stato realizzato con l'ausilio dell'infrastruttura di Jupyter, il linguaggio di programmazione Python 
+    e delle sue librerie fondamentali, come pandas, scikit-learn, NumPy, Matplotlib. 
     
     \vspace{5mm}
     Il presente report è organizzato nei seguenti passi:
@@ -131,16 +134,34 @@
 
     \end{itemize}
 
+
     \pagebreak
     \thispagestyle{plain}
     \section{Dataset}
     \label{sec:dataset}
-    Il dataset di riferimento utilizzato per la sperimentazione è \textbf{20newsgroups}, una corpus di circa 18.000 pubblicazioni
+    Il dataset di riferimento utilizzato per la sperimentazione è \textbf{20newsgroups}, un corpus di circa 18.000 pubblicazioni
     ampiamente utilizzata nel Natural Language Processing (NLP), e distribuite all'interno di venti differenti categorie tematiche. 
     Una caratteristica di questo dataset è l'organizzazione in forma gerarchica dei suoi topic, formalizzata dalla seguente struttura:
     \texttt{macrocategoria.sottocategoria} (con la possibilità di inserire ulteriori sottocategorie, successivamente alla prima).
     La documentazione relativa e i dati di partenza sono consultabili liberamente al seguente link:
     \href{https://www.kaggle.com/datasets/crawford/20-newsgroups}{https://www.kaggle.com/datasets/crawford/20-newsgroups}.
+
+    \begin{table}[htbp]
+        \centering
+        \begin{tabularx}{\textwidth}{lX}
+            \toprule
+            \textbf{Gruppo di Discussione} & \textbf{Descrizione} \\
+            \midrule
+            \texttt{rec.autos} & Discussioni su motori, recensioni, manutenzione e novità automobilistiche. \\
+            \texttt{rec.sport.baseball} & Spazio per appassionati di baseball: analisi, statistiche e campionati. \\
+            \texttt{sci.electronics} & Forum su progettazione di circuiti, componenti e teoria elettronica. \\
+            \texttt{sci.med} & Discussioni su medicina, salute, ricerche scientifiche e trattamenti. \\
+            \texttt{sci.space} & Spazio dedicato all'esplorazione spaziale, astronomia e tecnologia dei razzi. \\
+            \bottomrule
+        \end{tabularx}
+        \caption{Elenco dei newsgroup utilizzati nel progetto e relative descrizioni}
+        \label{tab:newsgroups}
+    \end{table}
 
 \begin{figure}[ht]
     \begin{lstlisting}[language={}]
@@ -177,57 +198,39 @@ swing/Dual Drive Actuator (DDA) hammer activities.
     nel seguente modo:
 
     \begin{itemize}
-        \item \textbf{Header}: Una sezione iniziale del documento, dove vengono inseriti alcuni metadati tecnici, come l'indirizzo email del mittente, il
+        \item \textbf{Header}: una sezione iniziale del documento, dove vengono inseriti alcuni metadati tecnici, come l'indirizzo email del mittente, il
         server di provenienza e l'oggetto del messaggio.
-        \item \textbf{Body} Il testo effettivo del post scritto dall'utente, un insieme di frasi in linguaggio naturale costituenti il vero nucleo informativo.
-        \item \textbf{Footer} Una sezione finale dedicata alle firme automatiche o citazioni personali
+        \item \textbf{Body}: il testo effettivo del post scritto dall'utente, un insieme di frasi in linguaggio naturale costituenti il vero nucleo informativo.
+        \item \textbf{Footer}: una sezione finale dedicata alle firme automatiche o citazioni personali.
     \end{itemize}
-    Un post di esempio, che rispetta questa struttura, è osservabile in \ref{fig:post-example}.
+    Un post di esempio, che rispetta questa struttura, è osservabile in \Cref{fig:post-example}.
+    
+     Il dataset è stato caricato in 
+    locale tramite la funzione \texttt{datasets.fetch\_20newsgroups()} di scikit-learn ed è stato successivamente ripartito in \textbf{training set} e \textbf{test set}, come rappresentato 
+    in \Cref{fig:distribuzione-set}.
+    In \Cref{fig:distribuzione-classi} viene riportata la distribuzione delle classi all'interno di training 
+    e test set, tenendo presente che queste rappresentano i gruppi di discussione. Si noti che le classi sono distribuite in maniera omogenea all'interno del dataset. Data l'assenza di sbilanciamenti nel dataset siamo in grado di comparare più equamente le prestazioni tra le diverse classi.
 
-    \begin{table}[htbp]
-        \centering
-        \begin{tabularx}{\textwidth}{lX}
-            \toprule
-            \textbf{Gruppo di Discussione} & \textbf{Descrizione} \\
-            \midrule
-            \texttt{rec.autos} & Discussioni su motori, recensioni, manutenzione e novità automobilistiche. \\
-            \texttt{rec.sport.baseball} & Spazio per appassionati di baseball: analisi, statistiche e campionati. \\
-            \texttt{sci.electronics} & Forum su progettazione di circuiti, componenti e teoria elettronica. \\
-            \texttt{sci.med} & Discussioni su medicina, salute, ricerche scientifiche e trattamenti. \\
-            \texttt{sci.space} & Spazio dedicato all'esplorazione spaziale, astronomia e tecnologia dei razzi. \\
-            \bottomrule
-        \end{tabularx}
-        \caption{Elenco dei newsgroup utilizzati nel progetto e relative descrizioni}
-        \label{tab:newsgroups}
-    \end{table}
-    
-    Il progetto è stato realizzato con l'ausilio dell'infrastruttura di Jupyter, il linguaggio di programmazione Python 
-    e delle sue librerie fondamentali, come pandas, scikit-learn, NumPy, Matplotlib. Il dataset è stato caricato in 
-    locale tramite la funzione \texttt{datasets.fetch\_20newsgroups} di scikit-learn.
-    Il dataset è stato successivamente ripartito in \textbf{training set} e \textbf{test set}, come rappresentato 
-    in \ref{fig:distribuzione-set}.
-    
     \begin{figure}[ht]
         \centering
-        \includegraphics[width=0.6\linewidth]{distribuzione_set.png}
+        \includegraphics[width=0.75\linewidth]{distribuzione_set.png}
         \caption{Distribuzione degli oggetti tra training set e test set}
         \label{fig:distribuzione-set}
     \end{figure}
-
-    In \ref{fig:distribuzione-classi} viene rappresentata la equa distribuzione delle classi all'interno del training 
-    e test set, tenendo presente che la classi rappresentano i gruppi di discussione.
+    
     \begin{figure}[ht]
         \centering
         \includegraphics[width=1\linewidth]{distribuzione_classi.png}
         \caption{Distribuzione delle classi nel dataset in esame}
         \label{fig:distribuzione-classi}
     \end{figure}
+
     
     \clearpage
     \thispagestyle{plain}
     \section{Preprocessing}
     \label{sec:preprocessing}
-    La fase di preprocessing è finalizzata sulla conversione dei dati testuali grezzi, contenuti nei documenti del dataset,
+    La fase di preprocessing è finalizzata alla conversione dei dati testuali grezzi, contenuti nei documenti del dataset,
     in rappresentazioni numeriche strutturate, tramite un processo chiamato vettorizzazione. In questo progetto sono stati
     implementati e confrontati due approcci metodologici: la rappresentazione statico-frequenziale \textbf{TF-IDF} e 
     l'utilizzo di vettori semantici densi tramite \textbf{embeddings GloVe}. Entrambe le metodologie sono state configurate
@@ -241,8 +244,8 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         viene calcolato il suo punteggio IDF. Il nucleo dell'algoritmo prevede il calcolo della frequenza di una parola
         all'interno del singolo post (frequenza \mbox{intra-documento}) pesata inversamente rispetto alla sua diffusione nell'
         intero dataset (frequenza \mbox{inter-documento}). L'intuzione è quella di restituire un valore TF-IDF più alto 
-        alle parole rare, in quanto in possesso di elevato potere discriminante l'identificazione del topic di 
-        appartenenza dell'intero messaggio. In \Cref{eq:tf-idf} è riportata la formula utilizzata da \texttt{TfidfVectorizer()}, implementato da \texttt{Scikit-learn}, per il calcolo del punteggio TF-IDF per un dato termine $t$ all'interno di un documento $d$. Si noti che i parametri di \textit{default} prevedono lo \textit{smoothing} aggiungendo $1$ per evitare la divisione per zero.
+        alle parole rare, in quanto in possesso di elevato potere discriminante per l'identificazione del topic di 
+        appartenenza dell'intero messaggio. In \Cref{eq:tf-idf} è riportata la formula utilizzata da \texttt{TfidfVectorizer()}, implementato da scikit-learn, per il calcolo del punteggio TF-IDF per un dato termine $t$ all'interno di un documento $d$. Si noti che i parametri di \textit{default} prevedono lo \textit{smoothing} aggiungendo $1$ per evitare la divisione per zero.
 
         \begin{equation}
         \begin{split}
@@ -252,9 +255,11 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         \label{eq:tf-idf}
         \end{equation}
 
+        \vspace{0.9cm}
+
         \item \textbf{Embedding Semantici GloVe} \\
         A differenza dell'approccio probabilistico e lessicale di TF-IDF, GloVe si appoggia ad un dizionario 
-        di vettori pre-addestrato. Ogni parola viene proiettata su uno spazio geometrico continuo a $N$ dimensioni,
+        di vettori generato da un modello pre-addestrato. Ogni parola viene proiettata su uno spazio geometrico continuo a $N$ dimensioni,
         in cui le coordinate precise di un termine sono in grado di rappresentare il suo significato semantico. 
         Questa rappresentazione ha il vantaggio che, parole con significato semantico simile, risulteranno vicine geometricamente
         tramite distanza euclidea. Ciò permette ai classificatori di intercettare relazioni tra parole sinonime e contesti
@@ -267,27 +272,32 @@ swing/Dual Drive Actuator (DDA) hammer activities.
     Nel caso di TF-IDF, questa fase di pulizia avviene internamente alla funzione \texttt{TfidfVectorizer()} impostando il parametro \texttt{stop\_words="english"}.
     Nel caso di GloVe, abbiamo implementato le seguenti funzioni:
     \begin{itemize}
-        \item \texttt{preprocess\_text(text)} : esegue il \textit{lowecasing}, elimina caratteri speciali e punteggiatura, rimuove le stop-words (ovvero le occorrenza di \texttt{sktext.ENGLISH\_STOP\_WORDS} all'interno del documento) ed effettua la \textit{tokenization} delle parole; 
-        \item \texttt{load\_embeddings(file\_path)} : carica il dizionario degli embeddings a partire dal file \texttt{glove.6B.100d.txt}, che presenta al suo interno un vettore di 100 valori numerici per ciascuna parola;
-        \item \texttt{get\_document\_embedding(tokens, glove\_embeddings)} : per ciascun token di un documento, ottiene l'embedding corrispondente, se presente nel dizionario GloVe, e calcola la media di tutti questi embedding per ottenere un unico vettore che rappresenta il documento. Se nessun token è presente all'interno del dizionario, il document embedding corrispondente è il vettore nullo.  
+        \item \texttt{preprocess\_text(text)}: esegue il \textit{lowercasing}, elimina caratteri speciali e punteggiatura, rimuove le stop-words (ovvero le occorrenza di \texttt{sktext.ENGLISH\_STOP\_WORDS} all'interno del documento) ed effettua la \textit{tokenization} delle parole; 
+        \item \texttt{load\_embeddings(file\_path)}: carica il dizionario degli embeddings a partire dal file \texttt{glove.6B.100d.txt}, che presenta al suo interno un vettore di 100 valori numerici per ciascuna parola;
+        \item \texttt{get\_document\_embedding(tokens, glove\_embeddings)}: per ciascun token di un documento, ottiene l'embedding corrispondente, se presente nel dizionario GloVe, e calcola la media di tutti questi embedding per ottenere un unico vettore che rappresenta il documento. Se nessun token è presente all'interno del dizionario, il document embedding corrispondente è il vettore nullo.  
     \end{itemize}
 
-    % Bisogna parlare anche delle stopwords, in quanto ricorrente per entrambe le rappresentazioni vettoriali
-
-    % Una volta che sono stati introdotti i due metodi di vettorizzazione, 
-    % è necessario parlare dei processi di elaborazione e trasformazione
-    % effettivamente svolti all'interno del dataset. Inoltre, le specifiche
-    % parlano di grafici e relativa documentazione che noi in questo momento non abbiamo
-
-    % TfIDF: togliere stopwords, impostare max 100 dimensioni e scalare il training set e test set
-
-    % GloVe: apertura dizionario (embeddings), preprocessing (minuscolo, tolta punteggiatura, tokenizzato, rimozione stopword)
-    
 
     \clearpage
     \thispagestyle{plain}
     \section{Applicazione Modelli}
     \label{sec:application-of-models}
+
+    L'esperimento ha previsto l'addestramento di sei modelli di classificazione multiclasse. Di seguito viene riportata, per ciascum modello addestrato, una breve descrizione accompagnata dalla spiegazione della scelta degli iperparametri.
+    \begin{itemize}
+    \item \textbf{Decision Tree} (DT) \\
+    Classificatore di shallow learning, basato su un albero decisionale in cui i nodi foglia rappresentano le classi e i nodi genitore rappresentano criteri decisionali. Nello specifico, la sua implementazione su scikit-learn avviene tramite albero binario. 
+    
+    È stata impostata una profondità massima \texttt{max\_depth=8}, che è piuttosto limitata, per evitare \textit{overfitting} sul dataset. Una misura di profondità eccessivamente alta protrebbe infatti condurre l'albero a imparare i criteri esatti per la classificazione. Invece, in tale modo abbiamo al più $2^{(8-1)}=128$ nodi decisionali, che si avvicinano al numero di features utilizzate. 
+    
+    È stato impostato un limite inferiore al numero di campioni necessari in una classe per eseguire uno split. Il valore scelto è \texttt{min\_samples\_split=0.01}, corrispondente all'$1\%$ del dataset. Ciò garantisce una crescita più controllata dell'albero.
+    
+    \item \textbf{K-Nearest Neighbors} (KNN) \\
+    \item \textbf{Multi Layer Perceptron} (MLP) \\
+    \item \textbf{Random Forest} (RF) \\
+    \item \textbf{Adaptive Boosting} (AdaBoost, AB) \\
+    \item \textbf{eXtreme Gradient Boosting} (XGBoost, XGB) \\
+    \end{itemize}
     
     \thispagestyle{plain}
     \section{Discussione}
