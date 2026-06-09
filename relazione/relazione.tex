@@ -313,19 +313,22 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         più controllata dell'albero.
         
         \item \textbf{K-Nearest Neighbors} (KNN) \\
-        Il KNN viene ampiamente considerato uno dei più semplici algoritmi di machine learning. Un oggetto è classificato
+        Ampiamente considerato uno dei più semplici algoritmi di machine learning. Secondo il KNN, un oggetto è classificato
         in base alla maggioranza dei voti dei suoi $k$ vicini (con $k$ un iperparametro intero positivo). La sua implementazione
         su scikit-learn non ha una vera fase di addestramento, si limita a inserire l'intero dataset sulla memoria centrale.
         Questa implementazione ha il vantaggio di avere un costo computazionale pari a $O(1)$, tuttavia risulta in pessime 
         prestazioni con dataset molto grandi.
-    
+        \texttt{n_neighbors=15, metric='cosine'}
+
+
         \item \textbf{Multi Layer Perceptron} (MLP) \\
-        Il MLP è un modello di rete neurale artificiale, costruita con strati multipli di nodi in un grafo diretto, di cui ogni
+        Modello di rete neurale artificiale, costruita con strati multipli di nodi in un grafo diretto, di cui ogni
         strato è direttamente connesso al successivo. Il suo obiettivo è mappare un insieme di dati di ingresso in un insieme
         di dati di uscita appropiati.
+        \texttt{hidden_layer_sizes=(100, 64), max_iter=300, early_stopping=True}
 
         \item \textbf{Random Forest} (RF) \\
-        IL RF è un classificatore di ensemble learning, ottenuto dall'aggregazione tramite bagging di diversi Decision Tree, nasce
+        Classificatore di ensemble learning, ottenuto dall'aggregazione tramite bagging di diversi Decision Tree, nasce
         come soluzione atta a ridurre l'overfitting del training set di quest'ultimi.
 
         \item \textbf{Adaptive Boosting} (AdaBoost, AB) \\
@@ -335,7 +338,7 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         focalizzandosi prevalentemente sui punti classificati erroneamente dagli scorsi stimatori.
 
         \item \textbf{eXtreme Gradient Boosting} (XGBoost, XGB) \\
-
+        Evoluzione dell'AdaBoost, basato sul paradigma del Gradient Tree Boosting.
     
     \end{itemize}
     
