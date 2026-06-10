@@ -318,18 +318,34 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         su scikit-learn non ha una vera fase di addestramento, si limita a inserire l'intero dataset sulla memoria centrale.
         Questa implementazione ha il vantaggio di avere un costo computazionale pari a $O(1)$, tuttavia risulta in pessime 
         prestazioni con dataset molto grandi.
-        \texttt{n_neighbors=15, metric='cosine'}
-
+        La scelta degli iperparametri è stata guidata dalla natura intrinseca dei dati testuali vettorializzati. In primo
+        luogo è stata adottata la metrica di similarità del coseno (\texttt{metric='cosine'}), alternativamente alla più classica
+        distanza euclidea. Questa scelta deriva dal fatto che, usando rappresentazioni geometriche vettoriali (GloVe e TF-IDF),
+        l'orientamento dei vettori cattura il significato semantico e concettuale in modo più robusto rispetto alla loro
+        norma geometrica. Parallelamente, il numero di vicini è stato fissato a quindici (\texttt{n\_neighbors=15}), per avere
+        un bilanciamento ottimale tra bias e varianza. Un valore di $K$ eccessivamente alto o eccessivamente basso potrebbe portare
+        il modello a condizioni di, rispettivamente, overfitting o underfitting. 
 
         \item \textbf{Multi Layer Perceptron} (MLP) \\
         Modello di rete neurale artificiale, costruita con strati multipli di nodi in un grafo diretto, di cui ogni
         strato è direttamente connesso al successivo. Il suo obiettivo è mappare un insieme di dati di ingresso in un insieme
-        di dati di uscita appropiati.
-        \texttt{hidden_layer_sizes=(100, 64), max_iter=300, early_stopping=True}
+        di dati di uscita appropiati. L'architettura della rete neurale artificiale è stata modellata con una scelta degli
+        iperparametri in grado di catturare le relazioni non lineari dei vettori testuali. Il numero di nodi di input 
+        scelto è pari a $64$, ovvero la potenza di $2$ più alta e inferiore di $100$. Così facendo la rete viene forzata
+        a comprimere le informazioni essenziali e ad scartare quelle poco salienti. Il numero di nodi dell'hidden layer 
+        contrae la dimensionalità a $32$ neuroni, agendo come un ulteriore imbuto. Gli iperparametri scelti per l'input
+        layer e l'hidden layer sono \texttt{hidden\_layer\_sizes=(64, 32)}. Per quanto riguarda il processo di ottimizzazione,
+        il limite massimo delle epoche è stato elevato a trecento, per garantire un margine computazionale sufficiente a convergere
+        verso un minimo locale stabile (\texttt{max\_iter=300}). Al fine di prevenire fenomeni di overfitting, è stata attivata
+        la regolarizzazione dinamica tramite \texttt{early\_stopping=True}.
 
         \item \textbf{Random Forest} (RF) \\
         Classificatore di ensemble learning, ottenuto dall'aggregazione tramite bagging di diversi Decision Tree, nasce
-        come soluzione atta a ridurre l'overfitting del training set di quest'ultimi.
+        come soluzione atta a ridurre l'overfitting del training set di quest'ultimi. Gli iperparametri scelti per gli 
+        estimatori sono stati quelli di default, poichè le loro prestazioni, lavorando parallelamente e con output 
+        congiunto, sono soddisfacenti. Inoltre, poichè il RF permette ai suoi estimatori di lavorare in parallelo e non
+        sequenzialmente, abbiamo impostato come numero di quest'ultimi pari a $200$, un numero più alto della media, ma
+        comunque non sufficiente per l'overfitting (\texttt{n\_estimators=200}). 
 
         \item \textbf{Adaptive Boosting} (AdaBoost, AB) \\
         L'intuizione che sta alla base dell'Adaboost risiede nell'addestramento sequenziale di un insieme di classificatori 
@@ -342,10 +358,6 @@ swing/Dual Drive Actuator (DDA) hammer activities.
     
     \end{itemize}
     
-    % Oltre all'elenco di modelli e iperparametri
-    % bisogna parlare dell'addestramento in se
-    % esponendo grafici di training
-
     \clearpage
     \thispagestyle{plain}
     \section{Discussione}
