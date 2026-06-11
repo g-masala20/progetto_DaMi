@@ -278,76 +278,89 @@
         \item \texttt{get\_document\_embedding(tokens, glove\_embeddings)}: per ciascun token di un documento, ottiene l'embedding corrispondente, se presente nel dizionario GloVe, e calcola la media di tutti questi embedding per ottenere un unico vettore che rappresenta il documento. Se nessun token è presente all'interno del dizionario, il document embedding corrispondente è il vettore nullo.  
     \end{itemize}
 
-    % Bisogna parlare anche delle stopwords, in quanto ricorrente per entrambe le rappresentazioni vettoriali
-
-    % Una volta che sono stati introdotti i due metodi di vettorizzazione, 
-    % è necessario parlare dei processi di elaborazione e trasformazione
-    % effettivamente svolti all'interno del dataset. Inoltre, le specifiche
-    % parlano di grafici e relativa documentazione che noi in questo momento non abbiamo
-
-    % TfIDF: togliere stopwords, impostare max 100 dimensioni e scalare il training set e test set
-
-    % GloVe: apertura dizionario (embeddings), preprocessing (minuscolo, tolta punteggiatura, tokenizzato, rimozione stopword)
-    
-
-    \clearpage
+    \pagebreak
     \thispagestyle{plain}
     \section{Applicazione Modelli}
     \label{sec:application-of-models}
-
-    L'esperimento ha previsto l'addestramento di sei modelli di classificazione multiclasse. Di seguito viene riportata, per ciascum modello addestrato, una breve descrizione accompagnata dalla spiegazione della scelta degli iperparametri.
+    La fase sperimentale ha previsto l'addestramento di sei modelli di classificazione multiclasse. Di seguito si propone, 
+    per ciascun algoritmo, una breve descrizione unita alla giustificazione metodologica della scelta dei relativi iperparametri.
+    
     \begin{itemize}
     
         \item \textbf{Decision Tree} (DT) \\
-        Classificatore di shallow learning, basato su un albero decisionale in cui i nodi foglia rappresentano le classi
-        e i nodi genitore rappresentano criteri decisionali. Nello specifico, la sua implementazione su scikit-learn
-        avviene tramite albero binario. È stata impostata una profondità massima \texttt{max\_depth=8}, che è piuttosto
-        limitata, per evitare overfitting sul dataset. Una misura di profondità eccessivamente alta
-        potrebbe infatti condurre l'albero a imparare i criteri esatti per la classificazione. Invece, in tale modo
-        abbiamo al più $2^{(8-1)}=128$ nodi decisionali, che si avvicinano al numero di features utilizzate. È stato
-        impostato un limite inferiore al numero di campioni necessari in una classe per eseguire uno split. Il valore
-        scelto è \texttt{min\_samples\_split=0.01}, corrispondente all'$1\%$ del dataset. Ciò garantisce una crescita
+        Classificatore di shallow learning, basato su un albero decisionale in cui i nodi foglia rappresentano le classi 
+        e i nodi genitore rappresentano criteri decisionali. Nello specifico, la sua implementazione su scikit-learn 
+        avviene tramite albero binario. È stata impostata una profondità massima \texttt{max\_depth=8}, che è piuttosto 
+        limitata, per evitare overfitting sul dataset. Una misura di profondità eccessivamente alta 
+        potrebbe infatti condurre l'albero a imparare i criteri esatti per la classificazione. Invece, in tale modo 
+        abbiamo al più $2^{(8-1)}=128$ nodi decisionali, che si avvicinano al numero di features utilizzate. È stato 
+        impostato un limite inferiore al numero di campioni necessari in una classe per eseguire uno split. Il valore 
+        scelto è \texttt{min\_samples\_split=0.01}, corrispondente all'$1\%$ del dataset. Ciò garantisce una crescita 
         più controllata dell'albero.
         
         \item \textbf{K-Nearest Neighbors} (KNN) \\
         Ampiamente considerato uno dei più semplici algoritmi di machine learning. Secondo il KNN, un oggetto è classificato
         in base alla maggioranza dei voti dei suoi $k$ vicini (con $k$ un iperparametro intero positivo). La sua implementazione
         su scikit-learn non ha una vera fase di addestramento, si limita a inserire l'intero dataset sulla memoria centrale.
-        Questa implementazione ha il vantaggio di avere un costo computazionale pari a $O(1)$, tuttavia risulta in pessime
+        Questa implementazione ha il vantaggio di avere un costo computazionale pari a $O(1)$, tuttavia risulta in pessime 
         prestazioni con dataset molto grandi.
         La scelta degli iperparametri è stata guidata dalla natura intrinseca dei dati testuali vettorializzati. In primo
         luogo è stata adottata la metrica di similarità del coseno (\texttt{metric='cosine'}), alternativamente alla più classica
-        distanza euclidea. Questa scelta deriva dal fatto che la norma di vettori non normalizzati potrebbe influire sulla classificazione, mentre con il coseno si considera unicamente la direzione dei vettori nello spazio delle features. Infine, il numero di vicini è stato fissato a (\texttt{n\_neighbors=15}), per avere
+        distanza euclidea. Questa scelta deriva dal fatto che, usando rappresentazioni geometriche vettoriali (GloVe e TF-IDF),
+        l'orientamento dei vettori cattura il significato semantico e concettuale in modo più robusto rispetto alla loro
+        norma geometrica. Parallelamente, il numero di vicini è stato fissato a quindici (\texttt{n\_neighbors=15}), per avere
         un bilanciamento ottimale tra bias e varianza. Un valore di $K$ eccessivamente alto o eccessivamente basso potrebbe portare
-        il modello rispettivamente a condizioni di overfitting o underfitting.
-        
+        il modello a condizioni di, rispettivamente, overfitting o underfitting. 
+
         \item \textbf{Multi Layer Perceptron} (MLP) \\
-        Modello di rete neurale artificiale, costruita con strati multipli di nodi in un grafo orientato, di cui ogni
-        strato è completamente connesso al successivo. Il suo obiettivo è realizzare un \textit{mapping} tra l'insieme di dati di ingresso in l'insieme
-        dei dati di uscita o in altri termini approssimare una funzione, eventualmente non-lineare. Il numero di nodi di input
-        scelto è pari a $64$, ovvero la potenza di $2$ più alta e inferiore di $100$ (numero di features). Così facendo la rete viene forzata
-        a comprimere le informazioni, andando ad estrarre quelle essenziali per la discriminazione delle classi. La dimensione dell'hidden layer successivo si riduce a $32$ neuroni per estrarre ulteriori astrazioni dei dati. Non abbiamo aggiunto ulteriori strati per evitare overfitting, dato che un numero elevato di neuroni è in grado di contenere tutte le informazioni necessarie alla classificazione quasi esatta delle categorie del dataset. Per quanto riguarda il processo di apprendimento,
-        il limite massimo delle epoche è stato impostato a \texttt{max\_iter=300}, per garantire un margine computazionale sufficiente a convergere verso un minimo locale stabile . Al fine di prevenire fenomeni di overfitting, è stata attivata
-        la regolarizzazione tramite \texttt{early\_stopping=True}.
-        
+        Modello di rete neurale artificiale, costruita con strati multipli di nodi in un grafo diretto, di cui ogni
+        strato è direttamente connesso al successivo. Il suo obiettivo è mappare un insieme di dati di ingresso in un insieme
+        di dati di uscita appropiati. L'architettura della rete neurale artificiale è stata modellata con una scelta degli
+        iperparametri in grado di catturare le relazioni non lineari dei vettori testuali. Il numero di nodi di input 
+        scelto è pari a $64$, ovvero la potenza di $2$ più alta e inferiore di $100$. Così facendo la rete viene forzata
+        a comprimere le informazioni essenziali e ad scartare quelle poco salienti. Il numero di nodi dell'hidden layer 
+        contrae la dimensionalità a $32$ neuroni, agendo come un ulteriore imbuto. Gli iperparametri scelti per l'input
+        layer e l'hidden layer sono \texttt{hidden\_layer\_sizes=(64, 32)}. Per quanto riguarda il processo di ottimizzazione,
+        il limite massimo delle epoche è stato elevato a trecento, per garantire un margine computazionale sufficiente a convergere
+        verso un minimo locale stabile (\texttt{max\_iter=300}). Al fine di prevenire fenomeni di overfitting, è stata attivata
+        la regolarizzazione dinamica tramite \texttt{early\_stopping=True}.
+
         \item \textbf{Random Forest} (RF) \\
-        Classificatore di ensemble learning, ottenuto dall'aggregazione tramite \textit{bagging} di diversi DT. RF nasce
-        come soluzione atta a ridurre la tendenza all'overfitting da parte dei DT. Gli iperparametri scelti per gli estimatori sono stati quelli di default, poichè le loro prestazioni, lavorando parallelamente e con output congiunto, sono soddisfacenti. Inoltre, poichè RF permette ai suoi estimatori di lavorare in parallelo e non sequenzialmente, abbiamo impostato il numero di estimatori pari a \texttt{n_estimators=200}, leggermente più alto del valore di default, ma comunque non sufficiente per l'overfitting.
-        
+        Classificatore di ensemble learning, ottenuto dall'aggregazione tramite bagging di diversi Decision Tree, nasce
+        come soluzione atta a ridurre l'overfitting del training set di quest'ultimi. Gli iperparametri scelti per gli 
+        estimatori sono stati quelli di default, poichè le loro prestazioni, lavorando parallelamente e con output 
+        congiunto, sono soddisfacenti. Inoltre, poichè il RF permette ai suoi estimatori di lavorare in parallelo e non
+        sequenzialmente, abbiamo impostato come numero di quest'ultimi pari a $200$, un numero più alto della media, ma
+        comunque non sufficiente per l'overfitting (\texttt{n\_estimators=200}). 
+
         \item \textbf{Adaptive Boosting} (AdaBoost, AB) \\
-        L'intuizione che sta alla base dell'Adaboost risiede nell'addestramento sequenziale di un insieme di classificatori
-        deboli (weak learners). A differenza dei metodi di bagging (come, ad esempio, il RF), in cui i modelli operano in
+        L'intuizione che sta alla base dell'Adaboost risiede nell'addestramento sequenziale di un insieme di classificatori 
+        deboli (weak learners). A differenza dei metodi di bagging (come, ad esempio, il RF), in cui i modelli operano in 
         parallelo e con parità di potere decisionale, Adaboost adotta un approccio in cui ogni nuovo stimatore viene addestrato
-        focalizzandosi prevalentemente sui punti classificati erroneamente dagli scorsi stimatori.
-        
+        focalizzandosi prevalentemente sui punti classificati erroneamente dagli scorsi stimatori.        
+        Per il classificatore AdaBoost, la scelta degli iperparametri è stata orientata alla ricerca di un equilibrio tra
+        accuratezza della convergenza e robustezza rispetto all'overfitting. Il numero di estimatori deboli è stato impostato 
+        a $100$ (\texttt{n\_estimators=100}). Questo poichè AdaBoost utilizza come modelli di base dei decision stumps 
+        (DT con un solo livello di profondità), e quindi con potere decisionale limitato, focalizzando il lavoro complessivo
+        sulle istanze testuali più complesse e più spesso classificate come errate. La scelta di voler inserire un learning
+        rate ridotto a 0.5 (\texttt{learning\_rate=0.5}) deriva da una regolarizzazione geometrica, che costringe il modello 
+        a essere lento nell'apprendimento. In questo modo si limita il raggiungimento dell'overfitting.
+
+
         \item \textbf{eXtreme Gradient Boosting} (XGBoost, XGB) \\
-        Evoluzione dell'AdaBoost, basato sul paradigma del Gradient Tree Boosting.
+        Evoluzione dell'AdaBoost, basato sul paradigma del Gradient Tree Boosting. La calibrazione degli iperparametri
+        mira a bilanciare la capacità predittiva dell'insieme e la stabilità della convergenza, in modo simile al classificatore
+        AdaBoost. Il numero di estimatori è stato impostato a $100$ (\texttt{n\_estimators=100}), un valore sufficiente a 
+        consentire all'algoritmo di minimizzare i residui della funzione di perdita del gradiente. In secondo luogo, il tasso
+        di apprendimento è stato fissato a $0.5$ (\texttt{learning\_rate=0.5}), operando come fattore di contrazione e garantendo
+        una convergenza più robusta.
+        
     \end{itemize}
     
+    \clearpage
     \thispagestyle{plain}
     \section{Discussione}
     \label{sec:discussion}
-       
     Una volta configurati gli iperparametri, abbiamo eseguito l'addestramento e il testing di ciascun modello. In seguito al test sono state raccolte le metriche richieste: \textbf{Accuracy}, \textbf{Precision}, \textbf{Recall} ed \textbf{F1-score}. In \Cref{tab:metriche} sono riportate le formule delle metriche utilizzate.    F1-score serve lo scopo di media armonica tra Precision e Recall, andando a penalizzare il punteggio in direzione della metrica col valore più basso. È comunque interessante considerare i singoli valori di Precision e Recall, per conoscere rispettivamente: la percentuale di predizioni corrette sul totale delle stime svolte nei confronti di una classe; la percentuale di predizioni corrette sul totale di campioni di una data classe.
     Infine, l'accuratezza descrive in maniera più generale le prestazioni dei modelli attraverso la percentuale di predizioni corrette. Visto che il dataset si presenta bilanciato, questa metrica risulta essere tanto esplicativa quanto intuitiva. I valori delle metriche raccolti a seguito del testing sono riportati in \Cref{tab:results} e distinti per TF-IDF (\Cref{tab:tfidf-results}) e GloVe (\Cref{tab:glove-results}). Recall e F1-score sono state calcolate con \texttt{averaging='macro'}, quindi come media aritmetica delle performance per-classe. 
 
