@@ -37,10 +37,12 @@
 \renewcommand{\sectionmark}[1]{\markboth{#1}{}}
 \renewcommand{\cftbeforesecskip}{0pt} % Imposta lo spazio a 0 punti
 \counterwithin{figure}{section}
+\setlength{\parindent}{1.25cm}
 
 % CleverRef settings
 \Crefname{figure}{Figura}{Figure}
 \Crefname{table}{Tabella}{Tabelle}
+\Crefname{subtable}{Tabella}{Tabelle}
 \Crefname{section}{Sezione}{Sezioni}
 \Crefname{equation}{Equazione}{Equazioni}
 
@@ -97,14 +99,14 @@
         \large ANNO ACCADEMICO 2025-2026
     \end{titlepage}
 
-    % Indice
     \pagenumbering{arabic}
-    \setcounter{page}{2}
-    \renewcommand{\contentsname}{Indice}
-    \tableofcontents
+    \setcounter{page}{1}
+    
+    % Indice
+    %\renewcommand{\contentsname}{Indice}
+    %\tableofcontents
     \pagebreak
 
-    
     % Inizio Documento
     \thispagestyle{plain}
     \section{Introduzione}
@@ -112,41 +114,29 @@
     delle interazioni interne dei newsgroup, spazi online storicamente strutturati su infrastrutture decentralizzate, 
     e dedicati al dibattito su topic ben determinati. L'obiettivo centrale del progetto è l'utilizzo di diversi algoritmi
     di classificazione, spaziando dai modelli storici tradizionali (shallow learning) ai modelli a combinazione (ensemble learning),
-    al fine di predire il topic di un post partendo dal contenuto dei suoi messaggi.
+    al fine di predire il topic di un post a partire dal suo contenuto.
     Lo studio non si è limitato all'analisi delle prestazioni dei classificatori, ma si estende alla comparazione dei metodi di rappresentazione
     geometrica dei dati in input. A questo scopo sono stati utilizzati due metodi di vettorizzazione: 
     \textbf{TF-IDF} (Term Frequency-Inverse Document Frequency) e \textbf{GloVe} (Global Vectors for Word Representation). Il progetto è stato realizzato con l'ausilio dell'infrastruttura di Jupyter, il linguaggio di programmazione Python 
-    e delle sue librerie fondamentali, come pandas, scikit-learn, NumPy, Matplotlib. 
-    
-    \vspace{5mm}
-    Il presente report è organizzato nei seguenti passi:
+    e delle sue librerie fondamentali, come pandas, scikit-learn, NumPy, Matplotlib. Il presente report è organizzato nei seguenti passi:
     \begin{itemize}
-        \item \textbf{\Cref{sec:dataset}} - \textbf{Dataset} Analisi approfondita del dataset 20newsgroups, della sua struttura e delle sue categorie tematiche
-        con approfondimento su quelle scelte.
+        \item \textbf{\Cref{sec:dataset}} - \textbf{Dataset} Analisi del dataset 20newsgroups, della sua struttura e delle sue categorie tematiche
+        con approfondimento su quelle individuate per il task.
 
-        \item \textbf{\Cref{sec:preprocessing}} - \textbf{Preprocessing} Descrizione del flusso di elaborazione e trasformazione dei dati, differenziando i due metodi di vettorizzazione scelti,
-        con relativo approfondimento sulle scelte di implementazione prese durante lo sviluppo del progetto.
+        \item \textbf{\Cref{sec:preprocessing}} - \textbf{Preprocessing} Descrizione del flusso di elaborazione e trasformazione dei dati, differenziando i due metodi di vettorizzazione scelti.
         
-        \item \textbf{\Cref{sec:application-of-models}} - \textbf{Applicazione modelli} Elenco dei classificatori utilizzati, con i relativi risultati di training e testing sul dataset
-        e scelte implementative effettuate sugli iperparametri.
+        \item \textbf{\Cref{sec:application-of-models}} - \textbf{Applicazione modelli} Elenco dei classificatori utilizzati, con relative descrizioni ed esposizione sulle scelte di configurazione effettuate sugli iperparametri.
         
-        \item \textbf{\Cref{sec:discussion}} - \textbf{Discussione} Argomentazione esaustiva sui risultati ottenuti con considerazioni argomentate e rappresentazione visiva dei dati, mediante tabelle e grafici informativi.
+        \item \textbf{\Cref{sec:discussion}} - \textbf{Discussione} Esposizione dei risultati ottenuti a seguito di training e testing, con considerazioni argomentate e rappresentazione visiva dei dati, mediante tabelle e grafici informativi.
 
     \end{itemize}
-
 
     \pagebreak
     \thispagestyle{plain}
     \section{Dataset}
     \label{sec:dataset}
-    Il dataset di riferimento utilizzato per la sperimentazione è \textbf{20newsgroups}, un corpus di circa 18.000 pubblicazioni
-    ampiamente utilizzata nel Natural Language Processing (NLP), e distribuite all'interno di venti differenti categorie tematiche. 
-    Una caratteristica di questo dataset è l'organizzazione in forma gerarchica dei suoi topic, formalizzata dalla seguente struttura:
-    \texttt{macrocategoria.sottocategoria} (con la possibilità di inserire ulteriori sottocategorie, successivamente alla prima).
-    La documentazione relativa e i dati di partenza sono consultabili liberamente al seguente link:
-    \href{https://www.kaggle.com/datasets/crawford/20-newsgroups}{https://www.kaggle.com/datasets/crawford/20-newsgroups}.
 
-    \begin{table}[htbp]
+    \begin{table}[t]
         \centering
         \begin{tabularx}{\textwidth}{lX}
             \toprule
@@ -163,37 +153,66 @@
         \label{tab:newsgroups}
     \end{table}
 
-\begin{figure}[ht]
-    \begin{lstlisting}[language={}]
-From: baalke@kelvin.jpl.nasa.gov (Ron Baalke)
-Subject: Galileo Update - 04/15/93
-Organization: Jet Propulsion Laboratory
-Lines: 113
-Distribution: world
-NNTP-Posting-Host: kelvin.jpl.nasa.gov
-Keywords: Galileo, JPL
-News-Software: VAX/VMS VNEWS 1.41    
+    \begin{figure}[t]
+        \centering
+        \begin{minipage}{\linewidth}
+        \begin{lstlisting}[language={},basicstyle=\footnotesize\ttfamily]
+        From: baalke@kelvin.jpl.nasa.gov (Ron Baalke)
+        Subject: Galileo Update - 04/15/93
+        Organization: Jet Propulsion Laboratory
+        Lines: 113
+        Distribution: world
+        NNTP-Posting-Host: kelvin.jpl.nasa.gov
+        Keywords: Galileo, JPL
+        News-Software: VAX/VMS TNEWS 1.41    
+        
+        Forwarded from Neal Ausman, Galileo Mission Director
+        
+                                        GALILEO
+                             MISSION DIRECTOR STATUS REPORT
+                                     POST-LAUNCH
+                                 April 9 - 15, 1993
+        
+        SPACECRAFT
+        
+        1.  On April 9, real-time commands were sent, as planned, to reacquire
+        celestial reference   completion of the Low Gain Antenna (LGA-2)
+        swing/Dual Drive Actuator (DDA) hammer activities.
+        
+        . . .
+        \end{lstlisting}
+        \end{minipage}
+        \caption{Estratto di un post del topic \texttt{sci.space}.}
+        \label{fig:post-example}
+    \end{figure}
 
-Forwarded from Neal Ausman, Galileo Mission Director
-
-                                GALILEO
-                     MISSION DIRECTOR STATUS REPORT
-                             POST-LAUNCH
-                         April 9 - 15, 1993
-
-SPACECRAFT
-
-1.  On April 9, real-time commands were sent, as planned, to reacquire
-celestial reference   completion of the Low Gain Antenna (LGA-2)
-swing/Dual Drive Actuator (DDA) hammer activities.
-...
-    \end{lstlisting}
-    \caption{Estratto di un post del topic \texttt{sci.space}}
-    \label{fig:post-example}
-\end{figure}
-
+    \begin{figure}[t]
+        \centering
+        \begin{subfigure}{0.45\textwidth}
+            \includegraphics[width=\textwidth]{distribuzione_set.png}
+            \caption{Distribuzione degli oggetti tra training set e test set.}
+            \label{fig:distribuzione-train-test}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=\textwidth]{distribuzione_classi.png}
+        \caption{Distribuzione omogenea delle classi nel dataset in esame (Train set in alto, Test set in basso).}
+        \label{fig:distribuzione-classi}
+        \end{subfigure}
+        \caption{Grafici relativi distribuzione dei dati nel dataset.}
+        \label{fig:distribuzioni-dataset}
+    \end{figure}
+    
+    
+    Il dataset di riferimento utilizzato per la sperimentazione è \textbf{20newsgroups}, un corpus di circa 18.000 pubblicazioni
+    ampiamente utilizzata nel Natural Language Processing (NLP), e distribuite all'interno di venti differenti categorie tematiche. 
+    Una caratteristica di questo dataset è l'organizzazione in forma gerarchica dei suoi topic, formalizzata dalla seguente struttura:
+    \texttt{macrocategoria.sottocategoria} (con la possibilità di inserire ulteriori sottocategorie, successivamente alla prima).
+    La documentazione relativa e i dati di partenza sono consultabili liberamente al seguente link:
+    \href{https://www.kaggle.com/datasets/crawford/20-newsgroups}{https://www.kaggle.com/datasets/crawford/20-newsgroups}.
+   
     Ai fini dell'eleborazione del dataset, è stato utilizzato solo un sottoinsieme di cinque categorie per analizzare il comportamento dei classificatori, di cui
-    alcune rappresentanti tematiche potenzialmente sovrapponibili concenttualmente. La totalità delle categorie utilizzate in questo scopo sono riportate in \Cref{tab:newsgroups}.
+    alcune rappresentanti tematiche potenzialmente sovrapponibili concenttualmente. Le categorie utilizzate in questo scopo sono riportate in \Cref{tab:newsgroups}.
     Dal punto di vista strutturale, ogni singolo documento del dataset corrisponde a un post creato da un utente. In linea con gli standard Usenet, ogni post è strutturato
     nel seguente modo:
 
@@ -201,38 +220,20 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         \item \textbf{Header}: una sezione iniziale del documento, dove vengono inseriti alcuni metadati tecnici, come l'indirizzo email del mittente, il
         server di provenienza e l'oggetto del messaggio.
         \item \textbf{Body}: il testo effettivo del post scritto dall'utente, un insieme di frasi in linguaggio naturale costituenti il vero nucleo informativo.
-        \item \textbf{Footer}: una sezione finale dedicata alle firme automatiche o citazioni personali.
+        \item \textbf{Footer}: una sezione finale opzionale dedicata alle firme automatiche o citazioni personali.
     \end{itemize}
-    Un post di esempio, che rispetta questa struttura, è osservabile in \Cref{fig:post-example}.
+    Un post di esempio, che rispetta questa struttura, è osservabile in \Cref{fig:post-example}. Il dataset è stato caricato in locale tramite la funzione \texttt{datasets.fetch\_20newsgroups()} di scikit-learn ed è stato successivamente ripartito in \textbf{training set} e \textbf{test set}. 
     
-     Il dataset è stato caricato in 
-    locale tramite la funzione \texttt{datasets.fetch\_20newsgroups()} di scikit-learn ed è stato successivamente ripartito in \textbf{training set} e \textbf{test set}, come rappresentato 
-    in \Cref{fig:distribuzione-set}.
-    In \Cref{fig:distribuzione-classi} viene riportata la distribuzione delle classi all'interno di training 
+    In \Cref{fig:distribuzioni-dataset} è rappresentata la suddivisione del dataset. Nello specifico in \Cref{fig:distribuzione-train-test} è rappresentata la distribuzione dei dati tra gli split di train e di test, mentre in \Cref{fig:distribuzione-classi} viene riportata la distribuzione delle classi all'interno di training 
     e test set, tenendo presente che queste rappresentano i gruppi di discussione. Si noti che le classi sono distribuite in maniera omogenea all'interno del dataset. Data l'assenza di sbilanciamenti nel dataset siamo in grado di comparare più equamente le prestazioni tra le diverse classi.
-
-    \begin{figure}[ht]
-        \centering
-        \includegraphics[width=0.75\linewidth]{distribuzione_set.png}
-        \caption{Distribuzione degli oggetti tra training set e test set}
-        \label{fig:distribuzione-set}
-    \end{figure}
-    
-    \begin{figure}[ht]
-        \centering
-        \includegraphics[width=1\linewidth]{distribuzione_classi.png}
-        \caption{Distribuzione delle classi nel dataset in esame}
-        \label{fig:distribuzione-classi}
-    \end{figure}
-
-    
+   
     \clearpage
     \thispagestyle{plain}
     \section{Preprocessing}
     \label{sec:preprocessing}
     La fase di preprocessing è finalizzata alla conversione dei dati testuali grezzi, contenuti nei documenti del dataset,
-    in rappresentazioni numeriche strutturate, tramite un processo chiamato vettorizzazione. In questo progetto sono stati
-    implementati e confrontati due approcci metodologici: la rappresentazione statico-frequenziale \textbf{TF-IDF} e 
+    in rappresentazioni numeriche, tramite un processo chiamato vettorizzazione. In questo progetto sono stati
+    implementati e confrontati due approcci metodologici: la rappresentazione frequenziale \textbf{TF-IDF} e 
     l'utilizzo di vettori semantici densi tramite \textbf{embeddings GloVe}. Entrambe le metodologie sono state configurate
     per lavorare su uno spazio lineare a cento dimensioni, come da specifiche.
     
@@ -240,10 +241,10 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         
         \item \textbf{Vettorizzazione TF-IDF} \\
         Il metodo TF-IDF (Term Frequency-Inverse Document Frequency) costruisce un dizionario interno al modello,
-        inserendo al suo interno ogni parola presente nel dataset. Per ogni parola presente nel dizionario,
-        viene calcolato il suo punteggio IDF. Il nucleo dell'algoritmo prevede il calcolo della frequenza di una parola
-        all'interno del singolo post (frequenza \mbox{intra-documento}) pesata inversamente rispetto alla sua diffusione nell'
-        intero dataset (frequenza \mbox{inter-documento}). L'intuzione è quella di restituire un valore TF-IDF più alto 
+        inserendo ogni parola presente nel dataset. Per ogni parola del dizionario,
+        viene calcolato un punteggio TF-IDF. Il nucleo dell'algoritmo prevede il calcolo della frequenza di una parola
+        all'interno del singolo post (frequenza \mbox{intra-documento}) pesata rispetto all'inverso della sua diffusione nell'
+        intero dataset (frequenza \mbox{inter-documento}). L'intuizione è quella di restituire un valore TF-IDF più alto 
         alle parole rare, in quanto in possesso di elevato potere discriminante per l'identificazione del topic di 
         appartenenza dell'intero messaggio. In \Cref{eq:tf-idf} è riportata la formula utilizzata da \texttt{TfidfVectorizer()}, implementato da scikit-learn, per il calcolo del punteggio TF-IDF per un dato termine $t$ all'interno di un documento $d$. Si noti che i parametri di \textit{default} prevedono lo \textit{smoothing} aggiungendo $1$ per evitare la divisione per zero.
 
@@ -255,115 +256,236 @@ swing/Dual Drive Actuator (DDA) hammer activities.
         \label{eq:tf-idf}
         \end{equation}
 
-        \vspace{0.7cm}
+        \vspace{0.9cm}
 
         \item \textbf{Embedding Semantici GloVe} \\
-        A differenza dell'approccio probabilistico e lessicale di TF-IDF, GloVe si appoggia ad un dizionario 
-        di vettori generato da un modello pre-addestrato. Ogni parola viene proiettata su uno spazio geometrico continuo a $N$ dimensioni,
+        A differenza dell'approccio statistico di TF-IDF, GloVe si appoggia ad un dizionario 
+        di vettori generato da un modello appositamente addestrato. Ogni parola viene proiettata su uno spazio geometrico continuo a $N$ dimensioni,
         in cui le coordinate precise di un termine sono in grado di rappresentare il suo significato semantico. 
-        Questa rappresentazione ha il vantaggio che, parole con significato semantico simile, risulteranno vicine geometricamente
-        tramite distanza euclidea. Ciò permette ai classificatori di intercettare relazioni tra parole sinonime e contesti
+        Questa rappresentazione ha il vantaggio che, parole con significato semantico simile, risulteranno vicine geometricamente secondo metriche di similarità come il coseno o la distanza euclidea. Ciò permette ai classificatori di intercettare relazioni tra parole sinonime e contesti
         logici che il semplice calcolo delle frequenze non sarebbe in grado di scoprire.
 
     \end{itemize}
 
-    In entrambi i casi, prima della vettorizzazione, viene eseguito un passo di normalizzazione del testo e di pulizia 
+    In entrambi i casi, prima della vettorizzazione, viene eseguito un passo di normalizzazione del testo e di pulizia
     dalle stop-words. Queste sono parole di uso comune in un linguaggio che non trasmettono un significato semantico
-    saliente, che tuttavia fanno parte della grammatica. Un esempio di tali parole sono gli articoli, presenti sia nella
-    lingua italiana che in quella inglese.
-    
-    Nel caso di TF-IDF, questa fase di pulizia avviene internamente alla funzione \texttt{TfidfVectorizer()} impostando il 
+    rilevante, che tuttavia fanno parte della grammatica. Un esempio di tali parole sono gli articoli e le preposizioni, presenti sia nella
+    lingua italiana che in quella inglese. Nel caso di TF-IDF, questa fase di pulizia avviene internamente alla funzione \texttt{TfidfVectorizer()} impostando il
     parametro \texttt{stop\_words="english"}. Nel caso di GloVe, abbiamo implementato le seguenti funzioni:
     \begin{itemize}
-
-        \item \texttt{preprocess\_text(text)}: esegue il lowercasing, elimina caratteri speciali e punteggiatura, rimuove 
-        le stop-words (ovvero le occorrenza di \texttt{sktext.ENGLISH\_STOP\_WORDS} all'interno del documento) ed effettua 
-        la tokenization delle parole;
-
-        \item \texttt{load\_embeddings(file\_path)}: carica il dizionario degli embeddings a partire dal file 
-        \texttt{glove.6B.100d.txt}, che presenta al suo interno un vettore di 100 valori numerici per ciascuna parola;
-        
-        \item \texttt{get\_document\_embedding(tokens, glove\_embeddings)}: per ciascun token di un documento, ottiene 
-        l'embedding corrispondente, se presente nel dizionario GloVe, e calcola la media di tutti questi embedding per 
-        ottenere un unico vettore che rappresenta il documento. Se nessun token è presente all'interno del dizionario, 
-        il document embedding corrispondente è il vettore nullo.  
-    
+        \item \texttt{preprocess\_text(text)}: esegue il \textit{lowercasing}, elimina caratteri speciali e punteggiatura, rimuove le stop-words (ovvero le occorrenza di \texttt{sktext.ENGLISH\_STOP\_WORDS} all'interno del documento) ed effettua la \textit{tokenization} delle parole; 
+        \item \texttt{load\_embeddings(file\_path)}: carica il dizionario degli embeddings a partire dal file \texttt{glove.6B.100d.txt}, che presenta al suo interno un vettore di 100 valori numerici per ciascuna parola;
+        \item \texttt{get\_document\_embedding(tokens, glove\_embeddings)}: per ciascun token di un documento, ottiene l'embedding corrispondente, se presente nel dizionario GloVe, e calcola la media di tutti questi embedding per ottenere un unico vettore che rappresenta il documento. Se nessun token è presente all'interno del dizionario, il document embedding corrispondente è il vettore nullo.  
     \end{itemize}
 
+    % Bisogna parlare anche delle stopwords, in quanto ricorrente per entrambe le rappresentazioni vettoriali
+
+    % Una volta che sono stati introdotti i due metodi di vettorizzazione, 
+    % è necessario parlare dei processi di elaborazione e trasformazione
+    % effettivamente svolti all'interno del dataset. Inoltre, le specifiche
+    % parlano di grafici e relativa documentazione che noi in questo momento non abbiamo
+
+    % TfIDF: togliere stopwords, impostare max 100 dimensioni e scalare il training set e test set
+
+    % GloVe: apertura dizionario (embeddings), preprocessing (minuscolo, tolta punteggiatura, tokenizzato, rimozione stopword)
+    
 
     \clearpage
     \thispagestyle{plain}
     \section{Applicazione Modelli}
     \label{sec:application-of-models}
 
-    La fase sperimentale ha previsto l'addestramento di sei modelli di classificazione multiclasse. Di seguito si propone, 
-    per ciascun algoritmo, una breve descrizione unita alla giustificazione metodologica della scelta dei relativi iperparametri.
-    
+    L'esperimento ha previsto l'addestramento di sei modelli di classificazione multiclasse. Di seguito viene riportata, per ciascum modello addestrato, una breve descrizione accompagnata dalla spiegazione della scelta degli iperparametri.
     \begin{itemize}
     
         \item \textbf{Decision Tree} (DT) \\
-        Classificatore di shallow learning, basato su un albero decisionale in cui i nodi foglia rappresentano le classi 
-        e i nodi genitore rappresentano criteri decisionali. Nello specifico, la sua implementazione su scikit-learn 
-        avviene tramite albero binario. È stata impostata una profondità massima \texttt{max\_depth=8}, che è piuttosto 
-        limitata, per evitare overfitting sul dataset. Una misura di profondità eccessivamente alta 
-        potrebbe infatti condurre l'albero a imparare i criteri esatti per la classificazione. Invece, in tale modo 
-        abbiamo al più $2^{(8-1)}=128$ nodi decisionali, che si avvicinano al numero di features utilizzate. È stato 
-        impostato un limite inferiore al numero di campioni necessari in una classe per eseguire uno split. Il valore 
-        scelto è \texttt{min\_samples\_split=0.01}, corrispondente all'$1\%$ del dataset. Ciò garantisce una crescita 
+        Classificatore di shallow learning, basato su un albero decisionale in cui i nodi foglia rappresentano le classi
+        e i nodi genitore rappresentano criteri decisionali. Nello specifico, la sua implementazione su scikit-learn
+        avviene tramite albero binario. È stata impostata una profondità massima \texttt{max\_depth=8}, che è piuttosto
+        limitata, per evitare overfitting sul dataset. Una misura di profondità eccessivamente alta
+        potrebbe infatti condurre l'albero a imparare i criteri esatti per la classificazione. Invece, in tale modo
+        abbiamo al più $2^{(8-1)}=128$ nodi decisionali, che si avvicinano al numero di features utilizzate. È stato
+        impostato un limite inferiore al numero di campioni necessari in una classe per eseguire uno split. Il valore
+        scelto è \texttt{min\_samples\_split=0.01}, corrispondente all'$1\%$ del dataset. Ciò garantisce una crescita
         più controllata dell'albero.
         
         \item \textbf{K-Nearest Neighbors} (KNN) \\
         Ampiamente considerato uno dei più semplici algoritmi di machine learning. Secondo il KNN, un oggetto è classificato
         in base alla maggioranza dei voti dei suoi $k$ vicini (con $k$ un iperparametro intero positivo). La sua implementazione
         su scikit-learn non ha una vera fase di addestramento, si limita a inserire l'intero dataset sulla memoria centrale.
-        Questa implementazione ha il vantaggio di avere un costo computazionale pari a $O(1)$, tuttavia risulta in pessime 
+        Questa implementazione ha il vantaggio di avere un costo computazionale pari a $O(1)$, tuttavia risulta in pessime
         prestazioni con dataset molto grandi.
         La scelta degli iperparametri è stata guidata dalla natura intrinseca dei dati testuali vettorializzati. In primo
         luogo è stata adottata la metrica di similarità del coseno (\texttt{metric='cosine'}), alternativamente alla più classica
-        distanza euclidea. Questa scelta deriva dal fatto che, usando rappresentazioni geometriche vettoriali (GloVe e TF-IDF),
-        l'orientamento dei vettori cattura il significato semantico e concettuale in modo più robusto rispetto alla loro
-        norma geometrica. Parallelamente, il numero di vicini è stato fissato a quindici (\texttt{n\_neighbors=15}), per avere
+        distanza euclidea. Questa scelta deriva dal fatto che la norma di vettori non normalizzati potrebbe influire sulla classificazione, mentre con il coseno si considera unicamente la direzione dei vettori nello spazio delle features. Infine, il numero di vicini è stato fissato a (\texttt{n\_neighbors=15}), per avere
         un bilanciamento ottimale tra bias e varianza. Un valore di $K$ eccessivamente alto o eccessivamente basso potrebbe portare
-        il modello a condizioni di, rispettivamente, overfitting o underfitting. 
-
+        il modello rispettivamente a condizioni di overfitting o underfitting.
+        
         \item \textbf{Multi Layer Perceptron} (MLP) \\
-        Modello di rete neurale artificiale, costruita con strati multipli di nodi in un grafo diretto, di cui ogni
-        strato è direttamente connesso al successivo. Il suo obiettivo è mappare un insieme di dati di ingresso in un insieme
-        di dati di uscita appropiati. L'architettura della rete neurale artificiale è stata modellata con una scelta degli
-        iperparametri in grado di catturare le relazioni non lineari dei vettori testuali. Il numero di nodi di input 
-        scelto è pari a $64$, ovvero la potenza di $2$ più alta e inferiore di $100$. Così facendo la rete viene forzata
-        a comprimere le informazioni essenziali e ad scartare quelle poco salienti. Il numero di nodi dell'hidden layer 
-        contrae la dimensionalità a $32$ neuroni, agendo come un ulteriore imbuto. Gli iperparametri scelti per l'input
-        layer e l'hidden layer sono \texttt{hidden\_layer\_sizes=(64, 32)}. Per quanto riguarda il processo di ottimizzazione,
-        il limite massimo delle epoche è stato elevato a trecento, per garantire un margine computazionale sufficiente a convergere
-        verso un minimo locale stabile (\texttt{max\_iter=300}). Al fine di prevenire fenomeni di overfitting, è stata attivata
-        la regolarizzazione dinamica tramite \texttt{early\_stopping=True}.
-
+        Modello di rete neurale artificiale, costruita con strati multipli di nodi in un grafo orientato, di cui ogni
+        strato è completamente connesso al successivo. Il suo obiettivo è realizzare un \textit{mapping} tra l'insieme di dati di ingresso in l'insieme
+        dei dati di uscita o in altri termini approssimare una funzione, eventualmente non-lineare. Il numero di nodi di input
+        scelto è pari a $64$, ovvero la potenza di $2$ più alta e inferiore di $100$ (numero di features). Così facendo la rete viene forzata
+        a comprimere le informazioni, andando ad estrarre quelle essenziali per la discriminazione delle classi. La dimensione dell'hidden layer successivo si riduce a $32$ neuroni per estrarre ulteriori astrazioni dei dati. Non abbiamo aggiunto ulteriori strati per evitare overfitting, dato che un numero elevato di neuroni è in grado di contenere tutte le informazioni necessarie alla classificazione quasi esatta delle categorie del dataset. Per quanto riguarda il processo di apprendimento,
+        il limite massimo delle epoche è stato impostato a \texttt{max\_iter=300}, per garantire un margine computazionale sufficiente a convergere verso un minimo locale stabile . Al fine di prevenire fenomeni di overfitting, è stata attivata
+        la regolarizzazione tramite \texttt{early\_stopping=True}.
+        
         \item \textbf{Random Forest} (RF) \\
-        Classificatore di ensemble learning, ottenuto dall'aggregazione tramite bagging di diversi Decision Tree, nasce
-        come soluzione atta a ridurre l'overfitting del training set di quest'ultimi. Gli iperparametri scelti per gli 
-        estimatori sono stati quelli di default, poichè le loro prestazioni, lavorando parallelamente e con output 
-        congiunto, sono soddisfacenti. Inoltre, poichè il RF permette ai suoi estimatori di lavorare in parallelo e non
-        sequenzialmente, abbiamo impostato come numero di quest'ultimi pari a $200$, un numero più alto della media, ma
-        comunque non sufficiente per l'overfitting (\texttt{n\_estimators=200}). 
-
+        Classificatore di ensemble learning, ottenuto dall'aggregazione tramite \textit{bagging} di diversi DT. RF nasce
+        come soluzione atta a ridurre la tendenza all'overfitting da parte dei DT. Gli iperparametri scelti per gli estimatori sono stati quelli di default, poichè le loro prestazioni, lavorando parallelamente e con output congiunto, sono soddisfacenti. Inoltre, poichè RF permette ai suoi estimatori di lavorare in parallelo e non sequenzialmente, abbiamo impostato il numero di estimatori pari a \texttt{n_estimators=200}, leggermente più alto del valore di default, ma comunque non sufficiente per l'overfitting.
+        
         \item \textbf{Adaptive Boosting} (AdaBoost, AB) \\
-        L'intuizione che sta alla base dell'Adaboost risiede nell'addestramento sequenziale di un insieme di classificatori 
-        deboli (weak learners). A differenza dei metodi di bagging (come, ad esempio, il RF), in cui i modelli operano in 
+        L'intuizione che sta alla base dell'Adaboost risiede nell'addestramento sequenziale di un insieme di classificatori
+        deboli (weak learners). A differenza dei metodi di bagging (come, ad esempio, il RF), in cui i modelli operano in
         parallelo e con parità di potere decisionale, Adaboost adotta un approccio in cui ogni nuovo stimatore viene addestrato
         focalizzandosi prevalentemente sui punti classificati erroneamente dagli scorsi stimatori.
-
+        
         \item \textbf{eXtreme Gradient Boosting} (XGBoost, XGB) \\
         Evoluzione dell'AdaBoost, basato sul paradigma del Gradient Tree Boosting.
-    
     \end{itemize}
     
-    \clearpage
     \thispagestyle{plain}
     \section{Discussione}
     \label{sec:discussion}
+       
+    Una volta configurati gli iperparametri, abbiamo eseguito l'addestramento e il testing di ciascun modello. In seguito al test sono state raccolte le metriche richieste: \textbf{Accuracy}, \textbf{Precision}, \textbf{Recall} ed \textbf{F1-score}. In \Cref{tab:metriche} sono riportate le formule delle metriche utilizzate.    F1-score serve lo scopo di media armonica tra Precision e Recall, andando a penalizzare il punteggio in direzione della metrica col valore più basso. È comunque interessante considerare i singoli valori di Precision e Recall, per conoscere rispettivamente: la percentuale di predizioni corrette sul totale delle stime svolte nei confronti di una classe; la percentuale di predizioni corrette sul totale di campioni di una data classe.
+    Infine, l'accuratezza descrive in maniera più generale le prestazioni dei modelli attraverso la percentuale di predizioni corrette. Visto che il dataset si presenta bilanciato, questa metrica risulta essere tanto esplicativa quanto intuitiva. I valori delle metriche raccolti a seguito del testing sono riportati in \Cref{tab:results} e distinti per TF-IDF (\Cref{tab:tfidf-results}) e GloVe (\Cref{tab:glove-results}). Recall e F1-score sono state calcolate con \texttt{averaging='macro'}, quindi come media aritmetica delle performance per-classe. 
+
+    % TABELLE METRICHE RACCOLTE
+    \begin{table}
+    \centering
+    \begin{subtable}{0.7\textwidth}
+        \centering
+        \resizebox{\linewidth}{!}{
+        \begin{tabular}{l|cccc}
+        \toprule
+        \textbf{Model} & \textbf{Accuracy} &  \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} \\
+        \hline
+        Decision Tree  & 0.56              & 0.69                & 0.56            & 0.58              \\
+        KNN            & 0.57              & 0.57                & 0.57            & 0.57              \\
+        MLP            & 0.62              & 0.62                & 0.62            & 0.62              \\
+        Random Forest  & 0.64              & 0.66                & 0.64            & 0.65              \\
+        AdaBoost       & 0.57              & 0.68                & 0.57            & 0.58              \\
+        XGBoost        & 0.63              & 0.64                & 0.63            & 0.63              \\
+        \bottomrule
+        \end{tabular}}
+        \caption{Risultati dei modelli con TF-IDF}
+        \label{tab:tfidf-results}
+    \end{subtable}
+
+    \vspace{1cm}
     
+    \begin{subtable}{0.7\textwidth}
+        \centering
+        \resizebox{\linewidth}{!}{
+        \begin{tabular}{l|cccc}
+        \toprule
+        \textbf{Model} & \textbf{Accuracy} &  \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} \\
+        \hline
+        Decision Tree  & 0.66              &  0.66               & 0.66            & 0.66             \\
+        KNN            & 0.88              &  0.88               & 0.88            & 0.88             \\
+        MLP            & 0.89              &  0.89               & 0.89            & 0.89             \\
+        Random Forest  & 0.87              &  0.87               & 0.87            & 0.87             \\
+        AdaBoost       & 0.80              &  0.81               & 0.80            & 0.81             \\
+        XGBoost        & 0.88              &  0.88               & 0.88            & 0.88             \\
+        \bottomrule
+        \end{tabular}}
+        \caption{Risultati dei modelli con TF-IDF}
+        \label{tab:glove-results}
+    \end{subtable}
+    \caption{Metriche risultanti dal testing dei modelli addestrati}
+    \label{tab:results}
+    \end{table}
+
+    % TABELLA FORMULE METRICHE
+    \begin{table}
+        \centering
+        \begin{tabular}{ll}
+        \toprule
+        \textbf{Metrica} & \textbf{Formula} \\ 
+        \midrule
+        \textbf{Accuracy}   & $\displaystyle \frac{TP + TN}{TP + TN + FP + FN}$ \\ \\ 
+        \textbf{Precision}  & $\displaystyle \frac{TP}{TP + FP}$ \\ \\
+        \textbf{Recall}     & $\displaystyle \frac{TP}{TP + FN}$ \\ \\
+        \textbf{F1-Score}   & $\displaystyle \frac{2 \cdot Precision \cdot Recall }{Precision + Recall}$ \\ \\
+        \midrule
+        $TP$ = True Positive  & $FP$ = False Positive \\
+        $TN$ = True Negative  & $FN$ = False Negative \\
+        \bottomrule
+        \end{tabular}
+        \caption{Riepilogo delle metriche di performance per la classificazione.}
+        \label{tab:metriche}
+    \end{table}
+    
+    In \Cref{fig:tfidf-performances} viene mostrato il grafico delle prestazioni dei modelli attraverso l'uso di TF-IDF. I valori di accuratezza sono globalmente bassi, con media $0.60 \pm 0.03$. I modelli ensamble mostrano prestazioni leggermente più alte, ma non superiori all'ordine di $+0.10$. L'unica eccezione tra gli ensemble è AdaBoost che mostra prestazioni ridotte, assimilabili al DT.
+
+    In \Cref{fig:glove-performances} viene mostrato il grafico delle prestazioni degli stessi modelli ma attraverso l'utilizzo di GloVe. Le prestazioni sono nettamente migliorate, passando ad una media $0.83 \pm 0.08$. Anche in questo caso abbiamo prestazioni alte nei modelli ensemble, persino in AdaBoost che si dimostra comunque più debole degli altri classificatori. Si nota un importante miglioramento di KNN, che riporta le prestazioni più alte dopo MLP. Il modello peggiore rimane DT.
+
+    Ci soffermiamo a osservare KNN. Mentre con TF-IDF mostrava prestazioni basse, ora risulta paragonabile ai classificatori più complessi. Ipotizziamo che ciò dipenda direttamente dal principio su cui GloVe si fonda: rappresentare in maniera spaziale relazioni semantiche tra le parole. Infatti, KNN utilizza una metrica di distanza per eseguire il \textit{voting} della classe di un certo elemento. Nel nostro caso andiamo ad utilizzare la metrica del coseno, adatta ai vettori, insieme al \textit{weighting} del voting in base alla prossimità dei \textit{neighbors} del punto considerato. Pensiamo che tutti questi fattori basati sulla distanza spaziale contribuiscano alle alte prestazioni di KNN. In questo contesto potrebbe essere considerato il modello migliore in quanto si presenta come un modello semplice, intuitivo ed efficiente, dato che non ha neanche bisogno di un vero tempo di addestramento come invece avviene negli altri modelli. Per quanto MLP mostri prestazioni leggermente più alte, perdono rilievo se paragonate al tempo impiegato da KNN per svolgere addestramento e predizione dei dati: MLP richiede un vero addestramento suddiviso in epoche, mentre KNN ha solo bisogno del calcolo di $N$ distanze, tante quante sono i neighbors impostati per il modello.
+
+    % BARCHART PRESTAZIONI 
+    \begin{figure}
+        \centering
+
+        \begin{subfigure}{\textwidth}
+            \centering
+            \fbox{\includegraphics[width=0.75\linewidth]{performances-tfidf.png}}
+            \caption{TF-IDF}
+            \label{fig:tfidf-performances}
+        \end{subfigure}
+
+        \vspace{1cm}
+    
+        \begin{subfigure}{\textwidth}
+            \centering
+            \fbox{\includegraphics[width=0.75\linewidth]{performances-glove.png}}
+            \caption{GloVe}
+            \label{fig:glove-performances}
+        \end{subfigure}
+
+        \caption{Metriche raccolte dal testing dei classificatori}
+        \label{fig:performances}
+    \end{figure}
+    
+    % MATRICI DI CONFUSIONE
+    \begin{figure}
+        \centering
+        \fbox{\includegraphics[width=1\linewidth]{conf_matrices.png}}
+        \caption{Matrici di confusione di ciascun modello e metodo di rappresentazione dei dati (TF-IDF in alto, GloVe in basso).}
+        \label{fig:conf-matrices}
+    \end{figure}
+
+    In \Cref{fig:conf-matrices} sono riportate le matrici di confusione per ciascun modello e metodo di rappresentazione dei dati. Questa visualizzazione delle matrici consente di svolgere delle valutazioni qualitative sulle prestazioni dei modelli. In tutti i modelli con TF-IDF abbiamo un'evidente difficoltà nella predizione delle classi \texttt{sci.eletronics} e \texttt{sci.med}. In particolare, se esaminiamo DT e AB notiamo una polarizzazione rispettivamente verso \texttt{sci.med} e \texttt{sci.eletronics}. Non siamo in grado di individuare le motivazioni dal momento che i modelli come DT e AB generano automaticamente i criteri di identificazione delle classi. Possiamo ipotizzare che i modelli abbiano rilevato una caratteristica che avrebbe potuto essere distintiva per la classe polarizzata, ma che invece si presenta in tutte le classi. Ciò che invece possiamo notare dalle matrici di confusione di GloVe, oltre ad una diagonale con valori stabili, è una piccola relazione di somiglianza tra la classe \texttt{rec.autos} e \texttt{sci.eletronics}, nonché una leggera confusione tra le predizioni della categoria \texttt{sci}. Probabilmente ciò è dovuto dalla presenza di termini comuni, soprattutto all'interno della stessa categoria.
+
+    Infine, riportiamo in \Cref{fig:ovr} le metriche di Accuracy ed F1-score, calcolate \mbox{per-classe}. Il calcolo è avvenuto in modalità \textit{One vs Rest}, considerando una classe per volta come la positiva e la totalità delle restanti come la negativa. In \Cref{fig:ovr_tfidf} possiamo notare in maniera più evidente le difficoltà di classificazione riportate precedentemente.
+
+    \begin{figure}
+        \centering
+
+        \begin{subfigure}{\textwidth}
+        \centering
+        \fbox{\includegraphics[width=0.75\linewidth]{OvR_TF-IDF.png}}
+        \caption{TF-IDF}
+        \label{fig:ovr_tfidf}
+        \end{subfigure}
+        
+        \vspace{1cm}
+        
+        \begin{subfigure}{\textwidth}
+        \centering
+        \fbox{\includegraphics[width=0.75\linewidth]{OvR_GloVe.png}}
+        \caption{GloVe}
+        \label{fig:ovr_glove}
+        \end{subfigure}
+
+        \caption{Prestazioni per-classe (One vs Rest) dei modelli}
+        \label{fig:ovr}
+    \end{figure}
+
     \thispagestyle{plain}
     \section{Conclusioni}
 
+    In conclusione, abbiamo svolto training e testing di sei modelli di classificazione attraverso due metodi di vettorizzazione: TF-IDF e GloVe. Abbiamo valutato le prestazioni dei modelli attraverso le metriche raccolte che abbiamo anche visualizzato in forma di grafici a barre, riscontrando prestazioni basse per TF-IDF in confronto a GloVe. Possiamo quindi ipotizzare che l'utilizzo di Word Embeddigs favorisca i modelli nei compiti di classificazione per via della loro capacità di distribuire l'informazione semantica delle parole tra tutte le features dei vettori. Concludiamo che l'approccio degli embeddings vince contro l'approccio statistico-frequenziale in un task di classificazione di NLP, come in quello preso in esame. Inoltre, possiamo affermare che le prestazioni dei classificatori dipendono fortemente dai dati in input. Un buon preprocessing dei dati, che consenta di estrarne il più possibile la natura informativa può essere cruciale per la buona riuscita del task. KNN dimostra che modelli semplici e intuitivi possono essere messi al pari di modelli più complessi, se configurati correttamente e se associati ai giusti dati in ingresso.
+
+     
 \end{document}
